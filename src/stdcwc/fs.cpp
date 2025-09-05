@@ -1,16 +1,20 @@
 #include "fs.hpp"
+#include "error.hpp"
 #include <stdlib.h>
 using namespace stdcwc;
 
 
-File::File(char *file_path) {
-	this->file_pointer = fopen(file_path, "rb");
+Result<File> File::open(char *path, char *modes) {
+	FILE *file_pointer = fopen(path, modes);
+
+	if (file_pointer != NULL) {
+		return Ok<File>({.file_pointer = file_pointer});
+	} else {
+		return Err<File>(ErrorCode::FileNotFound);
+	}
 }
 
 int File::pull() {
-	// Increment current character
-	this->current_char_index += 1;
-
 	// Return the current character
 	return fgetc(this->file_pointer);
 }

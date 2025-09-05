@@ -20,12 +20,22 @@ struct Result {
 
 	/// Gets the underlying value
 	///
-	/// If an error was returned, return `alt` instead
+	/// If this is an error, return `alt` instead
 	T unwrap_or(T alt) {
 		if (this->error_code == ErrorCode::Passed) {
 			return this->result;
 		} else {
 			return alt;
+		}
+	}
+
+	/// Gets the underlying value
+	///
+	/// If this is an error, exit with a predefined error message
+	T unwrap() {
+		if (this->error_code == ErrorCode::Passed) {
+			return this->result;
+		} else {
 		}
 	}
 };
