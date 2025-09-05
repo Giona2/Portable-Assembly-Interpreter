@@ -5,9 +5,11 @@
 
 int main() {
 	stdcwc::File file("/home/jonah/Documents/Programming/C++/iasm_mk4/testing/example.iasm");
-	int current_char = file.pull().unwrap_or(EOF);
+	int current_char = file.pull();
 
 	while (current_char != EOF) {
+		printf("%d\n", current_char);
 
+		current_char = file.pull();
 	}
 }

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "error.hpp"
 
 
 namespace stdcwc {
@@ -18,7 +17,7 @@ struct File {
 	/// Pull a byte from the file stream
 	///
 	/// Returns EOF when the end of a file is reached
-	Result<int> pull();
+	int pull();
 
 	/// Deconstruct instance of this
 	///
