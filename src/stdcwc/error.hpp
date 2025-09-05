@@ -11,6 +11,12 @@ enum ErrorCode {
 	FileNotFound,
 };
 
+/// An optional value
+template<typename T>
+struct Option {
+	T result;
+	bool is_none;
+};
 
 /// A value that may be an error
 template<typename T>
@@ -53,7 +59,19 @@ Result<T> Ok(T inner) {
 /// Return an error in place of a value
 template<typename T>
 Result<T> Err(ErrorCode error_code) {
-	return { .result = 0, .error_code = error_code };
+	return { .result = NULL, .error_code = error_code };
+}
+
+/// Return a value that otherwise wouldn't exist
+template<typename T>
+Option<T> Some(T inner) {
+	return { .result = inner, .is_none = false };
+}
+
+/// Return none in place of a value
+template<typename T>
+Option<T> None() {
+	return { .result = NULL, .is_none = true };
 }
 
 }
