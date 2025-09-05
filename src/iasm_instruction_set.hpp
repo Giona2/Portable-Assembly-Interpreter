@@ -1,6 +1,8 @@
 #pragma once
 
 
+/// Instruction set of an iasm binary
 enum IASMInstructionSet {
-	MOV = 0x1,
+	/// Change the value of a given register
+	SET = 0x1,
 };
