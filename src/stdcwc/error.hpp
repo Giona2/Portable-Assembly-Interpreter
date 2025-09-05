@@ -31,6 +31,7 @@ struct Result {
 };
 
 
+/// Displays `msg` to `stderr` then exits the program on code `error_code`
 __attribute__((noreturn)) void exit_on_error(char *msg, uint error_code);
 
 /// Return a value that otherwise would return an error
