@@ -10,8 +10,10 @@ namespace stdcwc {
 template<typename T> struct Result;
 template<typename T> struct Option;
 template<typename T> Option<T> None();
+template<typename T> Option<T> Some(T inner);
 
 
+/// Heap allocated slice
 template<typename T>
 struct Vec {
 	T *inner;
@@ -22,7 +24,7 @@ struct Vec {
 
 	/// Create an empty Vec
 	static Vec<T> new_() {
-		return {.inner = NULL, .len = 0, .capacity = sizeof(T)};
+		return Vec<T>(nullptr, 0, sizeof(T));
 	};
 
 	/// Create a Vec from a type array

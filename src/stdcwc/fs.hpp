@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "collections.hpp"
 
@@ -15,14 +16,13 @@ struct File {
 
 	static Result<File> open(char *path, char *modes);
 
-	/// Reads the entire file to a heap-allocated `String`
-	Vec<char> read() {
-	}
+	/// Reads the entire file to a `Vec`
+	Vec<u_int8_t> read();
 
 	/// Pull a byte from the file stream
 	///
 	/// Returns EOF when the end of a file is reached
-	int pull();
+	u_int8_t pull();
 
 	/// Close the underlying file
 	void close();
