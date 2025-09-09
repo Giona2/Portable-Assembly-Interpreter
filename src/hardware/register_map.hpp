@@ -1,4 +1,8 @@
 #include "supported_platforms.hpp"
+#include "sys/types.h"
+
+
+extern volatile u_int8_t *current_byte_instruction;
 
 
 #ifdef LINUX_AMD_64
@@ -28,3 +32,13 @@ __attribute__((always_inline)) inline void reset_registers() {
 		HARDWARE_MOV " $0, " HARDWARE_REGISTER_SEVEN "\n"
 	);
 }
+
+/// Sets this register to the first value in the register buffer
+void set_hardware_register_primary();
+void set_hardware_register_one();
+void set_hardware_register_two();
+void set_hardware_register_three();
+void set_hardware_register_four();
+void set_hardware_register_five();
+void set_hardware_register_six();
+void set_hardware_register_seven();
