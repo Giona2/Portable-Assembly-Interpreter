@@ -2,6 +2,7 @@
 #include "error.hpp"
 #include <stdlib.h>
 #include <stdint.h>
+#include <sys/types.h>
 using namespace stdcwc;
 
 
@@ -20,12 +21,12 @@ Vec<u_int8_t> File::read() {
 		Vec<u_int8_t> result = Vec<u_int8_t>::new_();
 
 		// Pull each character from `this` into the result
-		char current_char = this->pull();
-		while (current_char != EOF) {
-			result.push(current_char);
-
+		u_int8_t current_char;
+		do {
 			current_char = this->pull();
-		}
+
+			result.push(current_char);
+		} while (current_char != 0xFF);
 
 		// Return the result
 		return result;
