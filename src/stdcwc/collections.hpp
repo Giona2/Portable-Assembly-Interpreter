@@ -76,34 +76,4 @@ struct Vec {
 	}
 };
 
-struct String : public Vec<char> {
-	String(char *inner, size_t capacity, size_t len) : Vec<char>(inner, capacity, len) {
-
-	}
-
-	/// Create an empty Vec from a type array
-	static String from(char from[]) {
-		/// Allocate space for the vector
-		size_t capacity = sizeof(char);
-		char *inner = (char *)malloc(capacity);
-
-		/// Copy all content
-		int i = 0;
-		while (from[i] != 0) {
-			// if length reaches capacity, reallocate
-			if (i+1 >= capacity) {
-				capacity *= 2;
-				inner = (char *)realloc(inner, capacity);
-			}
-
-			inner[i] = from[i];
-
-			i+=1;
-		}
-
-		/// Construct it
-		return String(inner, i+1, capacity);
-	}
-};
-
 }

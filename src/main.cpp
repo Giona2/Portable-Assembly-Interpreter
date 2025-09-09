@@ -1,13 +1,17 @@
-#include <stdio.h>
 #include "stdcwc/stdcwc.hpp"
+#include "iasm_instruction_set.hpp"
+using namespace stdcwc;
 
 
 int main() {
-	stdcwc::File file = stdcwc::File::open("./testing/example.iasm", "rb").unwrap();
+	File file = File::open("./testing/example.iasm", "rb").unwrap();
 	int current_char = file.pull();
 
 	while (current_char != EOF) {
-		printf("%d\n", current_char);
+		switch (current_char) {
+			case IASMInstructionSet::SET:
+			break;
+		}
 
 		current_char = file.pull();
 	}
