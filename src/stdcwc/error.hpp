@@ -13,7 +13,7 @@ enum ErrorCode {
 	Passed,
 	FileNotFound,
 };
-String ErrorCode_get_msg(ErrorCode *self);
+Vec<char> ErrorCode_get_msg(ErrorCode *self);
 
 /// An optional value
 template<typename T>

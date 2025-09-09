@@ -12,13 +12,13 @@ __attribute__((noreturn)) void exit_on_error(char *msg, uint error_code) {
 }
 
 
-String ErrorCode_get_msg(ErrorCode *self) { switch (*self) {
+Vec<char> ErrorCode_get_msg(ErrorCode *self) { switch (*self) {
 	case (ErrorCode::FileNotFound):
-		return String::from("File could not be found");
+		return Vec<char>::from_str("File could not be found");
 	break;
 
 	case (ErrorCode::Passed):
-		return String::from("No error was found");
+		return Vec<char>::from_str("No error was found");
 	break;
 }}
 }

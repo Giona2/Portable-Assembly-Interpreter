@@ -16,8 +16,7 @@ struct File {
 	static Result<File> open(char *path, char *modes);
 
 	/// Reads the entire file to a heap-allocated `String`
-	String read() {
-		String msg = String::new_();
+	Vec<char> read() {
 	}
 
 	/// Pull a byte from the file stream

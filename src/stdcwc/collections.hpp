@@ -25,17 +25,34 @@ struct Vec {
 		return {.inner = NULL, .len = 0, .capacity = sizeof(T)};
 	};
 
-	/// Create an empty Vec from a type array
+	/// Create a Vec from a type array
 	static Vec<T> from(T from[], size_t len) {
-		/// Allocate space for the vector
+		// Allocate space for the vector
 		size_t capacity = len + 1 * sizeof(T);
 		T *inner = (T *)malloc(capacity);
 
-		/// Copy all content
+		// Copy all content
 		for (int i = 0; i < len; i++) inner[i] = from[i];
 
-		///
+		// Construct and return the vector
 		return {.inner = inner, .len = len, .capacity = capacity};
+	}
+
+	/// Create a Vec<char> from a const char * type
+	static Vec<char> from_str(const char *from) {
+		// Initialize the result
+		Vec<char> result = Vec::new_();
+
+		// Push each character from `from` to the result
+		const char *current_char = from;
+		while (current_char != 0) {
+			result.push(*current_char);
+
+			current_char += 1;
+		}
+
+		// Return the result
+		return result;
 	}
 
 	/// Add an element to this vector
