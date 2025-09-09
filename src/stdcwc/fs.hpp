@@ -18,10 +18,8 @@ struct File {
 	/// Returns EOF when the end of a file is reached
 	int pull();
 
-	/// Deconstruct instance of this
-	///
-	/// Closes the opened file
-	~File();
+	/// Close the underlying file
+	void close();
 };
 
 }

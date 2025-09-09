@@ -19,6 +19,6 @@ int File::pull() {
 	return fgetc(this->file_pointer);
 }
 
-File::~File() {
+void File::close() {
 	fclose(this->file_pointer);
 }
