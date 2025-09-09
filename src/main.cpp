@@ -1,3 +1,4 @@
+#include "iasm_instruction_set.hpp"
 #include "stdcwc/fs.hpp"
 #include "stdcwc/error.hpp"
 using namespace stdcwc;
@@ -16,7 +17,12 @@ volatile u_int8_t *current_byte_instruction;
 void execute_program() {
 	init_while();
 	while (*current_byte_instruction != 0xFF) {
-		end_while();
+		switch (*current_byte_instruction) {
+			case IASMInstructionSet::SET: end_while();
+			break;
+			_: end_while();
+			break;
+		}
 
 		init_while();
 		current_byte_instruction += 1;
