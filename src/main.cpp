@@ -3,7 +3,7 @@
 
 
 int main() {
-	stdcwc::File file = stdcwc::File::open("./testing/example.iasm", "rb").result;
+	stdcwc::File file = stdcwc::File::open("./testing/example.iasm", "rb").unwrap();
 	int current_char = file.pull();
 
 	while (current_char != EOF) {
@@ -11,4 +11,6 @@ int main() {
 
 		current_char = file.pull();
 	}
+
+	file.close();
 }

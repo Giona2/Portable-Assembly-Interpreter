@@ -71,7 +71,7 @@ struct Vec {
 		}
 	}
 
-	~Vec() {
+	void uninit() {
 		free(this->inner);
 	}
 };
