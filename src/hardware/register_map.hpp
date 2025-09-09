@@ -33,12 +33,97 @@ __attribute__((always_inline)) inline void reset_registers() {
 	);
 }
 
-/// Sets this register to the first value in the register buffer
-void set_hardware_register_primary();
-void set_hardware_register_one();
-void set_hardware_register_two();
-void set_hardware_register_three();
-void set_hardware_register_four();
-void set_hardware_register_five();
-void set_hardware_register_six();
-void set_hardware_register_seven();
+/* ===========
+ * === Set ===
+ * =========== */
+ /// Sets this register to the first value in the register buffer
+__attribute__((always_inline)) inline void set_hardware_register_primary() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_PRIMARY "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+		: "rax"
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_one() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_ONE "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_two() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_TWO "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_three() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_THREE "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_four() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_FOUR "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_five() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_FIVE "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_six() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_SIX "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+__attribute__((always_inline)) inline void set_hardware_register_seven() {
+	#ifdef LINUX_AMD_64
+
+	__asm__ volatile (
+		"movq %[buffer_value], %" HARDWARE_REGISTER_SEVEN "\n"
+		:
+		: [buffer_value] "m" (*current_byte_instruction)
+	);
+
+	#endif
+}
+/* =========== */

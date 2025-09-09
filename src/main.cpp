@@ -19,6 +19,7 @@ void execute_program() {
 	while (*current_byte_instruction != 0xFF) {
 		switch (*current_byte_instruction) {
 			case IASMInstructionSet::SET: end_while();
+				instruction_set();
 			break;
 			_: end_while();
 			break;

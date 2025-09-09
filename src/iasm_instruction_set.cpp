@@ -1,12 +1,17 @@
 #include "iasm_instruction_set.hpp"
 
+#include "hardware/register_map.hpp"
+#include "hardware/function_isolation.hpp"
+
 
 size_t register_buffer[4];
 
 
 void instruction_set() {
+	init_switch();
+
 	// Move to the set value
-	current_byte_instruction += 2;
+	current_byte_instruction += 1;
 
 	// Check if the value is a register or a literal
 	switch (*current_byte_instruction) {
@@ -17,14 +22,16 @@ void instruction_set() {
 			// Set the register buffer to the given value
 			register_buffer[0] = *(size_t *)current_byte_instruction;
 
-			// Move the current byte back to the literal indicator
-			current_byte_instruction -= 2;
+			// Move to the next instruction
+			current_byte_instruction += LITERAL_BYTE_SIZE;
 		break;
 	}
 
 	// Check what register the current byte instruction is
 	switch (*current_byte_instruction) {
 		case IASMInstructionSet::IREG_0:
+			end_switch();
+			set_hardware_register_primary();
 		break;
 	}
 }
