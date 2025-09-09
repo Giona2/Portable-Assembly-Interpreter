@@ -4,11 +4,13 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include "error.hpp"
-using namespace stdcwc;
 
 
 namespace stdcwc {
+template<typename T> struct Result;
+template<typename T> struct Option;
+template<typename T> Option<T> None();
+
 
 template<typename T>
 struct Vec {

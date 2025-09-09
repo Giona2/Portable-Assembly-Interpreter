@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "error.hpp"
 
 
 namespace stdcwc {
+template<typename T> struct Result;
 
 struct File {
 	FILE *file_pointer;
