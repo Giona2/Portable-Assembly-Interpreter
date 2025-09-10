@@ -1,5 +1,5 @@
 const std = @import("std");
-const incPtr = @import("stdzig/ptr.zig").inc_ptr;
+const Ptr = @import("stdzig/stdzig.zig").ptr.Ptr;
 
 
 test "array-manip" {
@@ -28,12 +28,12 @@ test "pointer-arith" {
 }
 
 test "manip-ptr" {
-    const array = [_]u8{1, 2, 3, 4, 5};
-    var first_element = &array[0];
+    var array = [_]u8{1, 2, 3, 4, 5};
+    var first_element: Ptr(u8) = Ptr(u8).new(&array[0]);
 
-    std.debug.print("First element: {d}\n", .{first_element.*});
+    std.debug.print("First element: {d}\n", .{first_element.ptr_ref().*});
 
-    incPtr(u8, &first_element);
+    first_element.inc(1);
 
-    std.debug.print("Next element: {d}\n", .{first_element.*});
+    std.debug.print("Next element: {d}\n", .{first_element.ptr_ref().*});
 }
