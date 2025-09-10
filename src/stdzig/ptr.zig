@@ -13,12 +13,12 @@ pub fn Ptr(comptime T: type) type { return struct {
 
     /// Move to the pointer `n` slots away
     pub fn inc(self: *Ptr(T), n: usize) void {
-        self.address += n;
+        self.address += (n * @sizeOf(T));
     }
 
     /// Move to the pointer `n` slots away
     pub fn dec(self: *Ptr(T), n: usize) void {
-        self.address -= n;
+        self.address -= (n * @sizeOf(T));
     }
 
     /// Get the address of this pointer

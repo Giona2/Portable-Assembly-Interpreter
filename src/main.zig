@@ -8,7 +8,6 @@ const stdzig = @import("stdzig/stdzig.zig");
         const Ptr = ptr.Ptr;
 
 const hardware = @import("hardware/hardware.zig");
-    const
 
 
 const allocator = std.heap.page_allocator;
@@ -30,6 +29,9 @@ fn execute_program() void {
 
 
 pub fn main() !void {
+    // Check hardware support
+    hardware.platform.check_hardware_support();
+
     // Get the target file's content
     const target_file = try fs.File.open("testing/example.iasm");
     var target_file_content = target_file.read();
