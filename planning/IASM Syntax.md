@@ -7,4 +7,5 @@ That being said, here's a comprehensive list of what I'd like to accomplish:
 - First iteration of my interface API
 
 # Interface API
-The interface
+The interface will be baked into the interpreter. The alternative would've been making it in iasm, but I'd have to completely flesh out the language first which is intirely unrealistic.  
+I'll be adding API functionality as-needed
