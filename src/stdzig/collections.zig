@@ -4,6 +4,9 @@ const std = @import("std");
 const allocator = std.heap.page_allocator;
 
 
+/// Heap allocated slice
+///
+/// Defer this with deinit()
 pub fn Vec(comptime T: type) type { return struct {
     inner: [*]T,
     len: usize,
@@ -15,6 +18,17 @@ pub fn Vec(comptime T: type) type { return struct {
         const inner: [*]T = (allocator.alloc(T, capacity) catch unreachable).ptr;
 
         return Vec(T){ .inner = inner, .len = 0, .capacity = capacity };
+    }
+
+    /// Creates a new Vec and sets the first `n` elements to `value`
+    pub fn init_predef(n: usize, value: T) Vec(T) {
+        const capaticy: usize = n;
+        const inner: [*]T = (allocator.alloc(value, capaticy) catch unreachable).ptr;
+
+        for (inner[0..n]) |*_value| {
+        }
+
+        return Vec(T){ .inner = inner, .len = n, .capacity = capaticy };
     }
 
     /// Construct a Vec(T) from the given value
@@ -29,6 +43,20 @@ pub fn Vec(comptime T: type) type { return struct {
 
         // Return the result
         return result;
+    }
+
+    /// Creates a new Vec around an existing pointer
+    ///
+    /// Please ensure _from is heap allocated
+    pub fn inherit(_from: []T) Vec(T) {
+        return Vec(T){ .inner = _from.ptr, .len = _from.len, .capacity = _from.len };
+    }
+
+    /// Copy the content from and existing slice to the end of this Vec
+    pub fn append(self: *Vec(T), _from: []const T) void {
+        for (_from) |value| {
+            self.push(value);
+        }
     }
 
     /// Add an element to this Vec
