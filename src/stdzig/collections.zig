@@ -24,10 +24,10 @@ pub fn Vec(comptime T: type) type { return struct {
     pub fn init_predef(n: usize, value: T) Vec(T) {
         // Allocate the vector
         const capaticy: usize = n;
-        var inner: [*]T = (allocator.alloc(value, capaticy) catch unreachable).ptr;
+        var inner: [*]T = (allocator.alloc(T, capaticy) catch unreachable).ptr;
 
         // Fill the vector with the predefined value
-        for (&inner[0..n]) |*_value| {
+        for (inner[0..n]) |*_value| {
             _value.* = value;
         }
 
@@ -94,6 +94,6 @@ pub fn Vec(comptime T: type) type { return struct {
 
     /// Deinitialize existing Vec
     pub fn deinit(self: *Vec(T)) void {
-        allocator.free(self.inner);
+        allocator.free(self.inner[0..self.len]);
     }
 };}
