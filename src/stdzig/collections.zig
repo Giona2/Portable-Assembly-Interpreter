@@ -87,7 +87,7 @@ pub fn Vec(comptime T: type) type { return struct {
         return self.inner[0..self.len];
     }
 
-    /// Gets this Vec as a slice
+    /// Gets this Vec as a mutable slice
     pub fn as_slice(self: *Vec(T)) []T {
         return self.inner[0..self.len];
     }
