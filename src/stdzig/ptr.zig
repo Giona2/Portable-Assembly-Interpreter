@@ -21,8 +21,13 @@ pub fn Ptr(comptime T: type) type { return struct {
         self.address -= n;
     }
 
+    /// Get the address of this pointer
+    pub fn addr(self: *const Ptr(T)) usize {
+        return self.address;
+    }
+
     /// Returns an immutable reference to the underlying pointer
-    pub fn ptr_ref(self: *Ptr(T)) *const T {
+    pub fn ptr_ref(self: *const Ptr(T)) *const T {
         return @ptrFromInt(self.address);
     }
 
