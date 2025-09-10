@@ -29,7 +29,7 @@ pub const File = struct {
     }
 
     /// Reads this file to a `Vec(u8)`
-    pub fn read(self: *File) Vec(u8) {
+    pub fn read(self: *const File) Vec(u8) {
         // Open the file and get its size
         const opened_file = std.fs.cwd().openFile(self.path, .{}) catch unreachable;
             defer opened_file.close();

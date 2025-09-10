@@ -10,9 +10,13 @@ const allocator = std.heap.page_allocator;
 
 
 pub fn main() !void {
-    var target_file = try fs.File.open("testing/example.iasm");
+    // Get the target file's content
+    const target_file = try fs.File.open("testing/example.iasm");
+    const target_file_content = target_file.read();
+        defer target_file_content.deinit();
 
-    for (target_file.read().slice_ref()) |byte| {
+    // Iterate through each byte in the file
+    for (target_file_content.slice_ref()) |byte| {
         std.debug.print("{d}\n", .{byte});
     }
 }

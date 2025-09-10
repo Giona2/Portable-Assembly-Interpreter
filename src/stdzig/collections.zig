@@ -93,7 +93,7 @@ pub fn Vec(comptime T: type) type { return struct {
     }
 
     /// Deinitialize existing Vec
-    pub fn deinit(self: *Vec(T)) void {
+    pub fn deinit(self: *const Vec(T)) void {
         allocator.free(self.inner[0..self.len]);
     }
 };}
