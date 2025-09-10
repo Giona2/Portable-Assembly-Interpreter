@@ -82,8 +82,13 @@ pub fn Vec(comptime T: type) type { return struct {
         self.inner[self.len-1] = element;
     }
 
-    /// Get this Vec as a slice of type `T`
-    pub fn as_slice(self: *const Vec(T)) []const T {
+    /// Returns a reference to this Vec as an immutable slice
+    pub fn slice_ref(self: *const Vec(T)) []const T {
+        return self.inner[0..self.len];
+    }
+
+    /// Gets this Vec as a slice
+    pub fn as_slice(self: *Vec(T)) []T {
         return self.inner[0..self.len];
     }
 
