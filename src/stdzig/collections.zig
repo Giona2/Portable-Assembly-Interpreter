@@ -22,12 +22,16 @@ pub fn Vec(comptime T: type) type { return struct {
 
     /// Creates a new Vec and sets the first `n` elements to `value`
     pub fn init_predef(n: usize, value: T) Vec(T) {
+        // Allocate the vector
         const capaticy: usize = n;
-        const inner: [*]T = (allocator.alloc(value, capaticy) catch unreachable).ptr;
+        var inner: [*]T = (allocator.alloc(value, capaticy) catch unreachable).ptr;
 
-        for (inner[0..n]) |*_value| {
+        // Fill the vector with the predefined value
+        for (&inner[0..n]) |*_value| {
+            _value.* = value;
         }
 
+        // Return the vector
         return Vec(T){ .inner = inner, .len = n, .capacity = capaticy };
     }
 

@@ -1,3 +1,6 @@
+const std = @import("std");
+
+
 test "array-manip" {
     var test_array = [5]u8{1, 2, 3, 4, 5};
     std.debug.print("before: {any}\n", .{test_array});
