@@ -7,6 +7,9 @@ const stdzig = @import("stdzig/stdzig.zig");
     const ptr = stdzig.ptr;
         const Ptr = ptr.Ptr;
 
+const hardware = @import("hardware/hardware.zig");
+    const
+
 
 const allocator = std.heap.page_allocator;
 
