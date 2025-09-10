@@ -1,6 +1,7 @@
-const malloc  = @import("std").c.malloc;
-const free    = @import("std").c.free;
-const realloc = @import("std").c.realloc;
+const std = @import("std");
+
+
+const allocator = std.heap.page_allocator;
 
 
 pub fn Vec(comptime T: type) type { return struct {
@@ -10,8 +11,8 @@ pub fn Vec(comptime T: type) type { return struct {
 
     /// Create a new empty Vec
     pub fn init() Vec(T) {
-        const capacity: usize = @sizeOf(T);
-        const inner: []T = @ptrCast(malloc(capacity));
+        const capacity: usize = 1;
+        const inner: [*]T = (allocator.alloc(T, capacity) catch unreachable).ptr;
 
         return Vec(T){ .inner = inner, .len = 0, .capacity = capacity };
     }
@@ -39,7 +40,10 @@ pub fn Vec(comptime T: type) type { return struct {
         if (self.len * @sizeOf(T) > self.capacity) {
             self.capacity *= 2;
 
-            realloc(self.inner, self.capacity);
+            self.inner = @ptrCast(allocator.realloc(self.inner[0..self.len], self.capacity)
+                catch unreachable);
+
+            //realloc(self.inner, self.capacity);
         }
 
         // Add the element
@@ -53,6 +57,6 @@ pub fn Vec(comptime T: type) type { return struct {
 
     /// Deinitialize existing Vec
     pub fn deinit(self: *Vec(T)) void {
-        free(self.inner);
+        allocator.free(self.inner);
     }
 };}

@@ -3,3 +3,4 @@
 /.nvim
 /planning
 /.run.fish
+/.zig-cache
