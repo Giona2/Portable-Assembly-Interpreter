@@ -50,7 +50,7 @@ pub fn Vec(comptime T: type) type { return struct {
         self.inner[self.len-1] = element;
     }
 
-    // Get this Vec as a slice of type `T`
+    /// Get this Vec as a slice of type `T`
     pub fn as_slice(self: *const Vec(T)) []const T {
         return self.inner[0..self.len];
     }
