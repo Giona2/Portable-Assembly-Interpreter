@@ -11,6 +11,9 @@ The interface will be baked into the interpreter. The alternative would've been 
 I'll be adding API functionality as-needed
 
 # Function Management
-Six function arg registers will be available for the sole purpose of passing arguments to functions and handling return statements
+Six function arg registers will be available for the sole purpose of passing arguments to functions and handling return statements.  
+A seventh function register will also be provided that handles the return value of the function
 
-#
+# Instruction Set
+## Stack/Variable management
+- Create Variable `0x1 <index> <size> `
