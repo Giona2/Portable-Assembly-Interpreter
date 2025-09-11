@@ -1,3 +1,8 @@
+const address_buffer = @import("main.zig").address_buffer;
+
+const current_byte_address = @import("main.zig").current_byte_address;
+
+
 //- `stt`|`0x01` : ; Initiate the stack frame
 //- `new`|`0x02` : `<size in bytes>` ; Create a new variable
 //  - Finds the first variable of the requested size
@@ -46,4 +51,6 @@ pub const InstructionSet = enum(u8) {
     ///
     /// Set to zero if none is provided
     RET = 0x06,
+
+    pub inline fn exec_new() void {}
 };

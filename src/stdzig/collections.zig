@@ -85,7 +85,7 @@ pub fn Vec(comptime T: type) type { return struct {
         self.len += 1;
 
         // If the vector's size is larger than its capacity, allocate more space
-        if (self.len * @sizeOf(T) > self.capacity) {
+        if (self.len > self.capacity) {
             self.capacity *= 2;
 
             self.inner = @ptrCast(allocator.realloc(self.inner[0..self.len], self.capacity)
@@ -106,8 +106,8 @@ pub fn Vec(comptime T: type) type { return struct {
     }
 
     /// Gets the last element of this vector
-    pub fn last(self: *Vec(T)) T {
-        return self.get.*;
+    pub fn last(self: *Vec(T)) VecError! T {
+        return (try self.get(self.len-1)).*;
     }
 
     /// Returns a reference to this Vec as an immutable slice
