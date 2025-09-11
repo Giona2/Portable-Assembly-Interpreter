@@ -1,3 +1,6 @@
+// ===============
+// === Imports ===
+// ===============
 const std = @import("std");
 
 const stdzig = @import("stdzig/stdzig.zig");
@@ -11,17 +14,29 @@ const hardware = @import("hardware/hardware.zig");
 
 const instruction_set = @import("instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
+// ===============
 
 
+// =================
+// === Constants ===
+// =================
 const allocator = std.heap.page_allocator;
+// =================
 
 
+// ===============
+// === Globals ===
+// ===============
 var file_content: Vec(u8) = undefined;
 pub var current_byte_address: usize = 0;
 
 pub var address_buffer: Vec(usize) = undefined;
+// ===============
 
 
+// =================
+// === Functions ===
+// =================
 noinline fn execute_program() void {
     while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
         switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
@@ -32,6 +47,7 @@ noinline fn execute_program() void {
         current_byte_address += 1;
     }
 }
+// =================
 
 
 pub fn main() !void {
@@ -42,7 +58,6 @@ pub fn main() !void {
     const target_file = try fs.File.open("testing/example.iasm");
     file_content = target_file.read();
         defer file_content.deinit();
-    file_content.push(0xFF);
 
     // Set the address buffer
     address_buffer = Vec(usize).init_predef(4, 0);
