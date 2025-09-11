@@ -14,6 +14,10 @@ const hardware = @import("hardware/hardware.zig");
 
 const instruction_set = @import("instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
+
+const variable_handle = @import("variable_handle.zig");
+    const variable_buffer = variable_handle.variable_buffer;
+    const Variable        = variable_handle.Variable;
 // ===============
 
 
@@ -27,16 +31,18 @@ const allocator = std.heap.page_allocator;
 // ===============
 // === Globals ===
 // ===============
+/// Content of the given source file
 var file_content: Vec(u8) = undefined;
-pub var current_byte_address: usize = 0;
 
-pub var address_buffer: Vec(usize) = undefined;
+/// Currently selected byte in the source file
+pub var current_byte_address: usize = 0;
 // ===============
 
 
 // =================
 // === Functions ===
 // =================
+/// Emulated process to execute the given source file
 noinline fn execute_program() void {
     while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
         switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
@@ -58,11 +64,10 @@ pub fn main() !void {
     const target_file = try fs.File.open("testing/example.iasm");
     file_content = target_file.read();
         defer file_content.deinit();
-
-    // Set the address buffer
-    address_buffer = Vec(usize).init_predef(4, 0);
-
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
+
+    // Setup the variable handling
+    variable_buffer = Vec(Variable).init();
 
     // Execute the program
     execute_program();

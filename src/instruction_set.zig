@@ -1,4 +1,4 @@
-const address_buffer = @import("main.zig").address_buffer;
+const address_buffer = @import("variable_handle.zig").address_buffer;
 
 const current_byte_address = @import("main.zig").current_byte_address;
 
@@ -52,5 +52,6 @@ pub const InstructionSet = enum(u8) {
     /// Set to zero if none is provided
     RET = 0x06,
 
-    pub inline fn exec_new() void {}
+    pub inline fn exec_new() void {
+    }
 };
