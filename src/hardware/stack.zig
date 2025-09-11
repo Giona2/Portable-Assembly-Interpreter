@@ -1,3 +1,4 @@
+/// Initiate a new stack frame
 pub inline fn init_stack() void {
     asm volatile (
         \\push %%rbp
@@ -5,6 +6,7 @@ pub inline fn init_stack() void {
     );
 }
 
+/// End the current stack frame
 pub inline fn end_stack() void {
     asm volatile (
         \\mov %%rbp, %%rsp
@@ -12,6 +14,7 @@ pub inline fn end_stack() void {
     );
 }
 
+/// Allocate space in the current stack frame
 pub inline fn alloc_stack(size: usize) void {
     asm volatile (
         \\sub %[size], %%rsp

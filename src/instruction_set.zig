@@ -1,6 +1,12 @@
-const address_buffer = @import("variable_handle.zig").address_buffer;
+const hardware = @import("hardware/hardware.zig");
+    const stack = hardware.stack;
 
-const current_byte_address = @import("main.zig").current_byte_address;
+const variable_handle = @import("variable_handle.zig");
+    const address_buffer = variable_handle.address_buffer;
+    const variable_buffer = variable_handle.variable_buffer;
+
+const root = @import("main.zig");
+    const current_byte_address = root.current_byte_address;
 
 
 //- `stt`|`0x01` : ; Initiate the stack frame
@@ -53,5 +59,6 @@ pub const InstructionSet = enum(u8) {
     RET = 0x06,
 
     pub inline fn exec_new() void {
+        stack.alloc_stack(size: usize)
     }
 };
