@@ -15,8 +15,10 @@ const instruction_set = @import("instruction_set.zig");
 const allocator = std.heap.page_allocator;
 
 
-var file_content: []const u8 = undefined;
+var file_content: Vec(u8) = undefined;
 var current_byte_address: usize = 0;
+
+var address_buffer: Vec(usize) = Vec(usize).init_predef(4, 0);
 
 
 noinline fn execute_program() void {
@@ -37,12 +39,11 @@ pub fn main() !void {
 
     // Get the target file's content
     const target_file = try fs.File.open("testing/example.iasm");
-    var target_file_content = target_file.read();
-        defer target_file_content.deinit();
-    target_file_content.push(0xFF);
+    var file_content = target_file.read();
+        defer file_content.deinit();
+    file_content.push(0xFF);
 
-    file_content = target_file_content.slice_ref();
-    current_byte_address = @intFromPtr(&file_content[0]);
+    current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
 
     // Execute the program
     execute_program();

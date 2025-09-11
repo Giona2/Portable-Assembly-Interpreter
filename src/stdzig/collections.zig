@@ -4,6 +4,11 @@ const std = @import("std");
 const allocator = std.heap.page_allocator;
 
 
+pub const VecError = error {
+    InvalidIndexGiven,
+};
+
+
 /// Heap allocated slice
 ///
 /// Defer this with deinit()
@@ -33,6 +38,17 @@ pub fn Vec(comptime T: type) type { return struct {
 
         // Return the vector
         return Vec(T){ .inner = inner, .len = n, .capacity = capaticy };
+    }
+
+    /// Gets the pointer to the `n`th element in this Vec
+    ///
+    /// Returns an error if `n` is invalid
+    pub fn get(self: *Vec(T), n: usize) VecError! *T {
+        // Ensure the given index is valid
+        if (n > self.len-1) return VecError.InvalidIndexGiven;
+
+        // Return the pointer to `n`th element
+        return &self.inner[n];
     }
 
     /// Construct a Vec(T) from the given value
@@ -80,6 +96,18 @@ pub fn Vec(comptime T: type) type { return struct {
 
         // Add the element
         self.inner[self.len-1] = element;
+    }
+
+    /// Removes the last element from the Vec
+    ///
+    /// This does not overwrite the last element of the Vec
+    pub fn shave(self: *Vec(T)) void {
+        self.len -= 1;
+    }
+
+    /// Gets the last element of this vector
+    pub fn last(self: *Vec(T)) T {
+        return self.get.*;
     }
 
     /// Returns a reference to this Vec as an immutable slice
