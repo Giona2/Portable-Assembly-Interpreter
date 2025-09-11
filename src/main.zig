@@ -24,7 +24,7 @@ var address_buffer: Vec(usize) = Vec(usize).init_predef(4, 0);
 noinline fn execute_program() void {
     while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
         switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
-            0 => {},
+            0 => {address_buffer.last();},
             else => {},
         }
 
@@ -39,7 +39,7 @@ pub fn main() !void {
 
     // Get the target file's content
     const target_file = try fs.File.open("testing/example.iasm");
-    var file_content = target_file.read();
+    file_content = target_file.read();
         defer file_content.deinit();
     file_content.push(0xFF);
 
