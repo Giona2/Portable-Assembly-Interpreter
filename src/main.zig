@@ -5,25 +5,28 @@ const stdzig = @import("stdzig/stdzig.zig");
         const Vec = collections.Vec;
     const fs = stdzig.fs;
     const ptr = stdzig.ptr;
-        const Ptr = ptr.Ptr;
+        const ptrFromAddr = ptr.ptrFromAddr;
 
 const hardware = @import("hardware/hardware.zig");
+
+const instruction_set = @import("instruction_set.zig");
 
 
 const allocator = std.heap.page_allocator;
 
 
-var last_byte:    Ptr(u8) = undefined;
-var current_byte: Ptr(u8) = undefined;
+var file_content: []const u8 = undefined;
+var current_byte_address: usize = 0;
 
 
-fn execute_program() void {
-    while (current_byte.addr() <= last_byte.addr()) {
-        switch (current_byte.ptr_ref().*) {
-            else => std.debug.print("{d}\n", .{current_byte.ptr_ref().*}),
+noinline fn execute_program() void {
+    while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
+        switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
+            0 => {},
+            else => {},
         }
 
-        current_byte.inc(1);
+        current_byte_address += 1;
     }
 }
 
@@ -36,11 +39,10 @@ pub fn main() !void {
     const target_file = try fs.File.open("testing/example.iasm");
     var target_file_content = target_file.read();
         defer target_file_content.deinit();
-    var file_content_ref = target_file_content.as_slice();
+    target_file_content.push(0xFF);
 
-    // Get the addresses of the first and last byte in file_content for pointer arithmetic
-    last_byte    = Ptr(u8).new(&file_content_ref[file_content_ref.len-1]);
-    current_byte = Ptr(u8).new(&file_content_ref[0]);
+    file_content = target_file_content.slice_ref();
+    current_byte_address = @intFromPtr(&file_content[0]);
 
     // Execute the program
     execute_program();

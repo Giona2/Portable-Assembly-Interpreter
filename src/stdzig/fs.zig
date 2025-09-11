@@ -10,6 +10,9 @@ const FSError = error {
 };
 
 
+pub const EOF: comptime_int = 0xFF;
+
+
 /// Manages a file at a given local path for reading and writing
 ///
 /// The file is only opened during direct manipulation and viewing phases, so this does not need to be defered
@@ -37,6 +40,7 @@ pub const File = struct {
 
         // Create a new filled vector
         var file_content = Vec(u8).init_predef(opened_file_size, 0);
+        file_content.push(EOF);
 
         // Set the vector's content to the file's content
         _ = opened_file.read(file_content.as_slice()) catch unreachable;

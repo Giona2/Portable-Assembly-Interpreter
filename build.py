@@ -2,7 +2,7 @@ import subprocess
 import os
 
 
-subprocess.run(["zig", "build-exe", "src/main.zig"])
+subprocess.run(["zig", "build-exe", "src/main.zig", "-O", "ReleaseFast"])
 
 try:
 	os.mkdir("./build")

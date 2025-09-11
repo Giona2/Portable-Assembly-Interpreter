@@ -1,3 +1,8 @@
+pub inline fn ptrFromAddr(comptime T: type, address: usize) *T {
+    return @ptrFromInt(address);
+}
+
+
 /// Pointer to a type that allows for pointer arithmetic
 pub fn Ptr(comptime T: type) type { return struct {
     address: usize,
