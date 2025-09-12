@@ -37,3 +37,17 @@ test "manip-ptr" {
 
     std.debug.print("Next element: {d}\n", .{first_element.ptr_ref().*});
 }
+
+test "register-state" {
+    // Set the r10 register to 1
+    asm volatile (
+        \\mov $1, %r10
+        :
+        :
+        : "r10"
+    );
+
+    const r10_reg_state: i64 = asm("" : [ret] "={r10}" (-> i64));
+
+    std.debug.print("{d}", .{r10_reg_state});
+}

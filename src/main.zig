@@ -17,7 +17,6 @@ const instruction_set = @import("instruction_set.zig");
 
 const variable_handle = @import("variable_handle.zig");
     const variable_buffer = variable_handle.variable_buffer;
-    const VariableBuffer  = variable_handle.VariableBuffer;
     const Variable        = variable_handle.Variable;
 // ===============
 
@@ -26,6 +25,7 @@ const variable_handle = @import("variable_handle.zig");
 // === Constants ===
 // =================
 const allocator = std.heap.page_allocator;
+
 // =================
 
 
@@ -66,10 +66,6 @@ pub fn main() !void {
     file_content = target_file.read();
         defer file_content.deinit();
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
-
-    // Setup the variable handling
-    variable_buffer = VariableBuffer{.buffer = Vec(Variable).init(), .total_size = 0};
-        defer variable_buffer.deinit();
 
     // Execute the program
     execute_program();
