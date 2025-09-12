@@ -59,6 +59,9 @@ pub const InstructionSet = enum(u8) {
     RET = 0x06,
 
     pub inline fn exec_new() void {
-        stack.alloc_stack(size: usize)
+        // Move to the allocation size
+        current_byte_address += 1;
+
+        // Allocate space on the stack
     }
 };
