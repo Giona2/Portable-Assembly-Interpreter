@@ -11,13 +11,6 @@ const stdzig = @import("stdzig/stdzig.zig");
         const ptrFromAddr = ptr.ptrFromAddr;
 
 const hardware = @import("hardware/hardware.zig");
-
-const instruction_set = @import("instruction_set.zig");
-    const InstructionSet = instruction_set.InstructionSet;
-
-const variable_handle = @import("variable_handle.zig");
-    const variable_buffer = variable_handle.variable_buffer;
-    const Variable        = variable_handle.Variable;
 // ===============
 
 
@@ -25,7 +18,6 @@ const variable_handle = @import("variable_handle.zig");
 // === Constants ===
 // =================
 const allocator = std.heap.page_allocator;
-
 // =================
 
 
@@ -45,14 +37,6 @@ pub var current_byte_address: usize = 0;
 // =================
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
-    while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
-        switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
-            @intFromEnum(InstructionSet.NEW) => InstructionSet.exec_new(),
-            else => {asm volatile ("nop");},
-        }
-
-        current_byte_address += 1;
-    }
 }
 // =================
 

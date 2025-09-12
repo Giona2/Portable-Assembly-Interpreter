@@ -1,16 +1,3 @@
-const hardware = @import("hardware/hardware.zig");
-    const stack = hardware.stack;
-
-
-const variable_handle = @import("variable_handle.zig");
-    const Variable = variable_handle.Variable;
-    extern var address_buffer:  [4]usize;
-    extern var variable_buffer: [50]Variable;
-
-const root = @import("main.zig");
-    extern var current_byte_address: usize;
-
-
 //- `stt`|`0x01` : ; Initiate the stack frame
 //- `new`|`0x02` : `<size in bytes>` ; Create a new variable
 //  - Finds the first variable of the requested size
@@ -63,12 +50,5 @@ pub const InstructionSet = enum(u8) {
 
     const default_variable_size: comptime_int = 8;
     pub inline fn exec_new() void {
-        // Move to the allocation size
-        current_byte_address += 1;
-
-        // Allocate space on the stack
-        // For now, this will always allocate eight bytes, no matter the size given
-        stack.alloc_stack(default_variable_size);
-        variable_buffer.add_variable();
     }
 };
