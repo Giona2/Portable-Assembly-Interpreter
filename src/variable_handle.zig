@@ -15,4 +15,16 @@ pub const VariableBuffer = struct {
     pub fn init() VariableBuffer {
         return .{ .buffer = [_]?Variable{null}**max_variable_count };
     }
+
+    pub fn add_variable(self: *VariableBuffer, size: i8, address: usize) void {
+        // Find the next available space
+        var variable_index: usize = 0;
+        while (variable_index < self.buffer.len) {
+            if (self.buffer[0] != null) break;
+            variable_index += 1;
+        }
+
+        // Construct the variable
+        self.buffer[variable_index] = .{ .address = address, .size = size };
+    }
 };

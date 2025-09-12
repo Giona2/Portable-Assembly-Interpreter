@@ -2,6 +2,7 @@
 // === Imports ===
 // ===============
 const std = @import("std");
+const builtin = @import("builtin");
 
 const stdzig = @import("stdzig/stdzig.zig");
     const collections = stdzig.collections;
@@ -11,6 +12,9 @@ const stdzig = @import("stdzig/stdzig.zig");
         const ptrFromAddr = ptr.ptrFromAddr;
 
 const hardware = @import("hardware/hardware.zig");
+
+const instruction_set = @import("instruction_set.zig");
+    const InstructionSet = instruction_set.InstructionSet;
 // ===============
 
 
@@ -28,7 +32,7 @@ const allocator = std.heap.page_allocator;
 var file_content: Vec(u8) = undefined;
 
 /// Currently selected byte in the source file
-pub var current_byte_address: usize = 0;
+var current_byte_address: usize = 0;
 // ===============
 
 
@@ -37,10 +41,11 @@ pub var current_byte_address: usize = 0;
 // =================
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
-    while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
-        std.debug.print("{d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
-        current_byte_address += 1;
-    }
+    while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) { switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
+        @intFromEnum(InstructionSet.NEW) => InstructionSet.exec_new(),
+
+        else => {},
+    }}
 }
 // =================
 

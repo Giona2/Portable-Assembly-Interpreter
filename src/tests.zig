@@ -1,5 +1,6 @@
 const std = @import("std");
 const Ptr = @import("stdzig/stdzig.zig").ptr.Ptr;
+const builtin = @import("builtin");
 
 
 test "array-manip" {
@@ -50,4 +51,8 @@ test "register-state" {
     const r10_reg_state: i64 = asm("" : [ret] "={r10}" (-> i64));
 
     std.debug.print("{d}", .{r10_reg_state});
+}
+
+test "comptime" {
+
 }

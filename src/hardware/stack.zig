@@ -23,3 +23,5 @@ pub inline fn alloc_stack(size: usize) void {
         : "rax"
     );
 }
+
+pub const active_pointer_register: []u8 = "r10";

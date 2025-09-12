@@ -1,3 +1,6 @@
+extern var current_byte_address: usize;
+
+
 //- `stt`|`0x01` : ; Initiate the stack frame
 //- `new`|`0x02` : `<size in bytes>` ; Create a new variable
 //  - Finds the first variable of the requested size
@@ -50,5 +53,9 @@ pub const InstructionSet = enum(u8) {
 
     const default_variable_size: comptime_int = 8;
     pub inline fn exec_new() void {
+        // Move to the byte size
+        current_byte_address += 1;
+
+        //
     }
 };

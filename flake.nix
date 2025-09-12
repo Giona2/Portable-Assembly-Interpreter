@@ -1,7 +1,7 @@
 {
   description = "Interpreter for the portable assembly format";
 
-  outputs = { self, nixpkgs}:
+  outputs = { nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
