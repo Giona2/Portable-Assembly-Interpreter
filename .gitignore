@@ -3,3 +3,4 @@
 /.nvim
 /.run.fish
 /.zig-cache
+/zig-out
