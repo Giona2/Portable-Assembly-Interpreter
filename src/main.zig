@@ -37,7 +37,10 @@ pub var current_byte_address: usize = 0;
 // =================
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
-    std.debug.print("{d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
+    while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) {
+        std.debug.print("{d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
+        current_byte_address += 1;
+    }
 }
 // =================
 
