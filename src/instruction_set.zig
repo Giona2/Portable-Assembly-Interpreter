@@ -1,14 +1,13 @@
 const hardware = @import("hardware/hardware.zig");
     const stack = hardware.stack;
 
-const variable_handle = @import("variable_handle.zig");
-    const VariableBuffer = variable_handle.VariableBuffer;
-
-    extern var variable_buffer: VariableBuffer;
 
 const root = @import("main.zig");
     extern var current_byte_address: usize;
 
+const globals = @import("globals.zig");
+    const VariableBuffer = globals.VariableBuffer;
+extern var variable_buffer: VariableBuffer;
 
 //- `stt`|`0x01` : ; Initiate the stack frame
 //- `new`|`0x02` : `<size in bytes>` ; Create a new variable

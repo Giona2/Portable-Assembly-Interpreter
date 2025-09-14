@@ -1,12 +1,7 @@
-// ===============
-// === Imports ===
-// ===============
 const std = @import("std");
 const builtin = @import("builtin");
 
 const source_file_parsing = @import("source_file_parsing.zig");
-    var file_content = source_file_parsing.file_content;
-    var current_byte_address = source_file_parsing.file_content;
 
 const stdzig = @import("stdzig/stdzig.zig");
     const collections = stdzig.collections;
@@ -19,16 +14,17 @@ const hardware = @import("hardware/hardware.zig");
 
 const instruction_set = @import("instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
-// ===============
+
+const globals = @import("globals.zig");
+    const VariableBuffer = globals.VariableBuffer;
+    extern var current_byte_address: usize;
+    extern var variable_buffer: VariableBuffer;
 
 
-// =================
-// === Constants ===
-// =================
 const allocator = std.heap.page_allocator;
-// =================
 
 
+var file_content: Vec(u8) = undefined;
 
 
 // =================
