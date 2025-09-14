@@ -7,9 +7,9 @@
       pkgs = import nixpkgs { inherit system; };
     in {
       devShells.x86_64-linux.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          pkg-config
-        ];
+#        buildInputs = with pkgs; [
+#          pkg-config
+#        ];
         shellHook = ''
           zig build
           exit
