@@ -11,7 +11,6 @@
           pkg-config
         ];
         shellHook = ''
-          export PKG_CONFIG_PATH=${pkgs.sdl3}/lib/pkgconfig
           zig build
           exit
         '';
