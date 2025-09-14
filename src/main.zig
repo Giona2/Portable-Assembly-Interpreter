@@ -1,8 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const source_file_parsing = @import("source_file_parsing.zig");
-
 const stdzig = @import("stdzig/stdzig.zig");
     const collections = stdzig.collections;
         const Vec = collections.Vec;
