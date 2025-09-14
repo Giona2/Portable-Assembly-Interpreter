@@ -49,4 +49,7 @@ pub const InstructionSet = enum(u8) {
     ///
     /// Set to zero if none is provided
     RET = 0x06,
+
+    /// End the current stack frame
+    END = 0x07,
 };
