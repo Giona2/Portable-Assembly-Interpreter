@@ -12,7 +12,7 @@ const stdzig = @import("stdzig/stdzig.zig");
 
 const hardware = @import("hardware/hardware.zig");
 
-const instruction_set = @import("instruction_set.zig");
+const instruction_set = @import("instruction_set/instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
 
 const globals = @import("globals.zig");
@@ -33,7 +33,7 @@ var file_content: Vec(u8) = undefined;
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
     while (@as(*u8, @ptrFromInt(current_byte_address)).* != fs.EOF) { switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
-        @intFromEnum(InstructionSet.NEW) => InstructionSet.exec_new(),
+        @intFromEnum(InstructionSet.NEW) => instruction_set.variables.exec_new(),
 
         else => {},
     }}
