@@ -1,4 +1,13 @@
-extern var current_byte_address: usize;
+const hardware = @import("hardware/hardware.zig");
+    const stack = hardware.stack;
+
+const variable_handle = @import("variable_handle.zig");
+    const VariableBuffer = variable_handle.VariableBuffer;
+
+    extern var variable_buffer: VariableBuffer;
+
+const root = @import("main.zig");
+    extern var current_byte_address: usize;
 
 
 //- `stt`|`0x01` : ; Initiate the stack frame
@@ -56,6 +65,10 @@ pub const InstructionSet = enum(u8) {
         // Move to the byte size
         current_byte_address += 1;
 
-        //
+        // Allocate space on the stack
+        stack.alloc_stack(default_variable_size);
+
+        // Register the new variable
+        variable_buffer.add_variable(default_variable_size, asm volatile("" : [ret] "={rsp}" (->usize)));
     }
 };

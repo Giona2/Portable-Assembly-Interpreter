@@ -4,6 +4,10 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
+const source_file_parsing = @import("source_file_parsing.zig");
+    var file_content = source_file_parsing.file_content;
+    var current_byte_address = source_file_parsing.file_content;
+
 const stdzig = @import("stdzig/stdzig.zig");
     const collections = stdzig.collections;
         const Vec = collections.Vec;
@@ -25,15 +29,6 @@ const allocator = std.heap.page_allocator;
 // =================
 
 
-// ===============
-// === Globals ===
-// ===============
-/// Content of the given source file
-var file_content: Vec(u8) = undefined;
-
-/// Currently selected byte in the source file
-var current_byte_address: usize = 0;
-// ===============
 
 
 // =================

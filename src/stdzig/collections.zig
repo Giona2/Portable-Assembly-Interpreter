@@ -12,7 +12,7 @@ pub const VecError = error {
 /// Heap allocated slice
 ///
 /// Defer this with deinit()
-pub fn Vec(comptime T: type) type { return struct {
+pub fn Vec(comptime T: type) type { return extern struct {
     inner: [*]T,
     len: usize,
     capacity: usize,
