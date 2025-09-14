@@ -29,7 +29,7 @@ var last_byte: usize = undefined;
 // =================
 // === Functions ===
 // =================
-pub const watchdog_logging: bool = true;
+pub const watchdog_logging: bool = false;
 pub noinline fn watchdog() void {
     std.debug.print("\n============================\n", .{});
 
@@ -56,17 +56,29 @@ pub noinline fn watchdog() void {
 
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
-    while (current_byte_address < last_byte) { if (comptime watchdog_logging) { watchdog(); } switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
-        @intFromEnum(InstructionSet.STT) => instruction_set.variables.exec_stt(),
+    while (true) {
+        // If the current byte ecceeds the last byte, break the loop
+        if (current_byte_address > last_byte) break;
 
-        @intFromEnum(InstructionSet.NEW) => instruction_set.variables.exec_new(),
+        // Run the watchdog log messages
+        if(comptime watchdog_logging) watchdog();
 
-        @intFromEnum(InstructionSet.SET) => instruction_set.variables.exec_set(),
+        // Chech the current instruction
+        switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
+            @intFromEnum(InstructionSet.STT) => instruction_set.variables.exec_stt(),
 
-        @intFromEnum(InstructionSet.END) => instruction_set.variables.exec_end(),
+            @intFromEnum(InstructionSet.NEW) => instruction_set.variables.exec_new(),
 
-        else => {},
-    } current_byte_address += 1; }
+            @intFromEnum(InstructionSet.SET) => instruction_set.variables.exec_set(),
+
+            @intFromEnum(InstructionSet.END) => instruction_set.variables.exec_end(),
+
+            else => {},
+        }
+
+        // Move to the next byte and continue
+        current_byte_address += 1;
+    }
 }
 // =================
 

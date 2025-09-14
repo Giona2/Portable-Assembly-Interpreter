@@ -40,7 +40,6 @@ pub const File = struct {
 
         // Create a new filled vector
         var file_content = Vec(u8).init_predef(opened_file_size, 0);
-        file_content.push(EOF);
 
         // Set the vector's content to the file's content
         _ = opened_file.read(file_content.as_slice()) catch unreachable;
