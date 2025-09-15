@@ -29,8 +29,8 @@ pub const AddressBuffer = extern struct {
         .len = 0,
     };}
 
-    /// Push an address to the address buffer
-    pub fn add_address(self: *AddressBuffer, address: usize) void {
+    /// Add an address to the address buffer
+    pub fn push_address(self: *AddressBuffer, address: usize) void {
         self.len += 1;
 
         self.inner[self.len-1] = address;
@@ -39,6 +39,17 @@ pub const AddressBuffer = extern struct {
     /// Remove the last address from the address buffer
     pub fn remove_address(self: *AddressBuffer) void {
         self.len -= 1;
+    }
+
+    /// Retreaves the most recent address from the address buffer
+    pub fn get_most_recent_address(self: *AddressBuffer) usize {
+        return self.inner[self.len-1];
+    }
+
+    /// Get the last address pushed to the buffer, then deletes it
+    pub fn pop_address(self: *AddressBuffer) usize {
+        self.len -= 1;
+        return self.inner[self.len];
     }
 };
 
