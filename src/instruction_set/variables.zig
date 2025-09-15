@@ -4,10 +4,12 @@ const hardware = @import("../hardware/hardware.zig");
 const globals = @import("../globals.zig");
     const CurrentVariableFrame = globals.CurrentVariableFrame;
     const CallerVariableFrames = globals.CallerVariableFrames;
+    const AddressBuffer = globals.AddressBuffer;
 
     extern var current_variable_frame: CurrentVariableFrame;
     extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
+    extern var address_buffer: AddressBuffer;
 
 const root = @import("../main.zig");
     const watchdog = root.watchdog;
@@ -18,20 +20,30 @@ pub const default_variable_size: type = i64;
 pub const stack_slot_size: usize = 16;
 
 
-pub inline fn exec_stt() void {
+pub fn exec_stt() void {
     current_variable_frame.start_new_frame();
 }
 
-pub inline fn exec_new() void {
-
+pub fn exec_new() void {
+    current_variable_frame.length += 1;
 }
 
-pub inline fn exec_set() void {
+pub fn exec_set() void {
+    // Get the variable index
+    current_byte_address += 1;
+    const variable_index: i8 = @as(*i8, @ptrFromInt(current_byte_address)).*;
+
+    // Get the variable value
+    current_byte_address += 1;
+    const variable_value: usize = @as(*usize, @ptrFromInt(current_byte_address)).*;
+
+    // Construct the new variable
+    current_variable_frame.inner[@as(usize, variable_index)].value = variable_value;
 }
 
-pub inline fn exec_lod() void {
+pub fn exec_lod() void {
 }
 
-pub inline fn exec_end() void {
+pub fn exec_end() void {
     caller_variable_frames.restore_last_frame();
 }

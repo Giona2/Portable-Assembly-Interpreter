@@ -16,8 +16,31 @@ export var current_byte_address: usize = 0;
 // ======================
 const maximum_variable_count: comptime_int = 32;
 
-export var current_variable_frame: CurrentVariableFrame = undefined;
+export var current_variable_frame: CurrentVariableFrame = CurrentVariableFrame.init();
 export var caller_variable_frames: CallerVariableFrames = undefined;
+export var address_buffer: AddressBuffer = AddressBuffer.init();
+
+pub const AddressBuffer = extern struct {
+    inner: [maximum_variable_count]usize,
+    len: usize,
+
+    pub fn init() AddressBuffer { return .{
+        .inner = [_]usize{0}**maximum_variable_count,
+        .len = 0,
+    };}
+
+    /// Push an address to the address buffer
+    pub fn add_address(self: *AddressBuffer, address: usize) void {
+        self.len += 1;
+
+        self.inner[self.len-1] = address;
+    }
+
+    /// Remove the last address from the address buffer
+    pub fn remove_address(self: *AddressBuffer) void {
+        self.len -= 1;
+    }
+};
 
 pub const CallerVariableFrames = extern struct {
     inner: Vec(Vec(Variable)),
