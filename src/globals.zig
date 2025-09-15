@@ -59,7 +59,7 @@ pub const CallerVariableFrames = extern struct {
         // Copy the data from the previous frame to the current fram
         var current_variable_index: usize = 0;
         while (current_variable_index < current_variable_frame.length) {
-            current_variable_frame.inner[current_variable_index] = previous_frame[current_variable_index];
+            current_variable_frame.inner[current_variable_index] = (previous_frame.get(current_variable_index) catch unreachable).*;
 
             current_variable_index += 1;
         }

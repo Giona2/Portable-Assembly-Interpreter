@@ -85,13 +85,11 @@ pub fn Vec(comptime T: type) type { return extern struct {
         self.len += 1;
 
         // If the vector's size is larger than its capacity, allocate more space
-        if (self.len > self.capacity) {
+        if (self.len >= self.capacity) {
             self.capacity *= 2;
 
             self.inner = @ptrCast(allocator.realloc(self.inner[0..self.len], self.capacity)
                 catch unreachable);
-
-            //realloc(self.inner, self.capacity);
         }
 
         // Add the element

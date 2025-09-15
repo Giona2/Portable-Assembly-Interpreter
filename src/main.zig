@@ -34,11 +34,21 @@ var last_byte: usize = undefined;
 // =================
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
+    std.debug.print("\nCurrent Char: {d}\n", .{@as(*i8, @ptrFromInt(current_byte_address)).*});
+    std.debug.print("\nCurrent variable frame\n", .{});
+    std.debug.print("  len: {d}\n", .{current_variable_frame.length});
+    var i: usize = 0;
+    while (i < current_variable_frame.length) {
+        std.debug.print("  {d} [{d}]\n", .{current_variable_frame.inner[i].value, current_variable_frame.inner[i].size});
+        i+=1;
+    }
 }
 
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
     while (current_byte_address <= last_byte) {
+        if (current_byte_address > last_byte) break;
+
         // Run the watchdog log messages
         if (comptime watchdog_logging) watchdog();
 
@@ -73,6 +83,10 @@ pub fn main() !void {
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
     last_byte = @intFromPtr(&file_content.slice_ref()[file_content.len-1]);
 
+    caller_variable_frames = CallerVariableFrames.init();
+
     // Execute the program
     execute_program();
+
+    if (comptime watchdog_logging) watchdog();
 }

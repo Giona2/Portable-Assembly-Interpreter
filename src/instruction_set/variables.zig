@@ -1,3 +1,5 @@
+const std = @import("std");
+
 const hardware = @import("../hardware/hardware.zig");
     const stack = hardware.stack;
 
@@ -26,6 +28,10 @@ pub fn exec_stt() void {
 
 pub fn exec_new() void {
     current_variable_frame.length += 1;
+
+    current_byte_address += 1;
+
+    current_variable_frame.inner[current_variable_frame.length-1].size  = @as(*i8, @ptrFromInt(current_byte_address)).*;
 }
 
 pub fn exec_set() void {
@@ -38,7 +44,10 @@ pub fn exec_set() void {
     const variable_value: usize = @as(*usize, @ptrFromInt(current_byte_address)).*;
 
     // Construct the new variable
-    current_variable_frame.inner[@as(usize, variable_index)].value = variable_value;
+    current_variable_frame.inner[@intCast(variable_index)].value = variable_value;
+
+    // Move to the next instruction
+    current_byte_address += @sizeOf(default_variable_size);
 }
 
 pub fn exec_lod() void {
