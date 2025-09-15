@@ -106,8 +106,8 @@ pub fn Vec(comptime T: type) type { return extern struct {
     }
 
     /// Gets the last element of this vector
-    pub fn last(self: *Vec(T)) VecError! T {
-        return (try self.get(self.len-1)).*;
+    pub fn last(self: *Vec(T)) VecError! *T {
+        return (try self.get(self.len-1));
     }
 
     /// Returns a reference to this Vec as an immutable slice

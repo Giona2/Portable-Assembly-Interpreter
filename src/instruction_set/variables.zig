@@ -2,10 +2,12 @@ const hardware = @import("../hardware/hardware.zig");
     const stack = hardware.stack;
 
 const globals = @import("../globals.zig");
-    const VariableBuffer = globals.VariableBuffer;
+    const CurrentVariableFrame = globals.CurrentVariableFrame;
+    const CallerVariableFrames = globals.CallerVariableFrames;
 
+    extern var current_variable_frame: CurrentVariableFrame;
+    extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
-    extern var variable_buffer: VariableBuffer;
 
 const root = @import("../main.zig");
     const watchdog = root.watchdog;
@@ -17,13 +19,11 @@ pub const stack_slot_size: usize = 16;
 
 
 pub inline fn exec_stt() void {
-    asm volatile (
-        \\ push %rbp
-        \\ mov  %rsp, %rbp
-    );
+    current_variable_frame.start_new_frame();
 }
 
 pub inline fn exec_new() void {
+
 }
 
 pub inline fn exec_set() void {
@@ -33,8 +33,5 @@ pub inline fn exec_lod() void {
 }
 
 pub inline fn exec_end() void {
-    asm volatile (
-        \\ mov %rbp, %rsp
-        \\ pop %rbp
-    );
+    caller_variable_frames.restore_last_frame();
 }

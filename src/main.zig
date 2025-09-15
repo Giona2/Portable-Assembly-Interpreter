@@ -14,9 +14,12 @@ const instruction_set = @import("instruction_set/instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
 
 const globals = @import("globals.zig");
-    const VariableBuffer = globals.VariableBuffer;
+    const CurrentVariableFrame = globals.CurrentVariableFrame;
+    const CallerVariableFrames = globals.CallerVariableFrames;
+
+    extern var current_variable_frame: CurrentVariableFrame;
+    extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
-    extern var variable_buffer: VariableBuffer;
 
 
 const allocator = std.heap.page_allocator;
@@ -31,35 +34,11 @@ var last_byte: usize = undefined;
 // =================
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
-    std.debug.print("\n============================\n", .{});
-
-    std.debug.print("\nLast address: {d}\n", .{@intFromPtr(&file_content.get(file_content.len-1))});
-
-    // Print the variable states
-    std.debug.print("\nVariable Buffer\n", .{});
-    for (variable_buffer.buffer) |variable| {
-        if (!variable.is_active) break;
-
-        std.debug.print("  {d} [{d}]: {d}\n", .{
-            variable.address,
-            variable.size,
-            @as(*instruction_set.variables.default_variable_size, @ptrFromInt(variable.address)).*
-        });
-    }
-
-    // Print the current byte index and value
-    std.debug.print("\nCurrent byte\n", .{});
-    std.debug.print("{d}: {d}\n", .{current_byte_address, @as(*i8, @ptrFromInt(current_byte_address)).*});
-
-    std.debug.print("\n============================\n", .{});
 }
 
 /// Emulated process to execute the given source file
 noinline fn execute_program() void {
-    while (true) {
-        // If the current byte ecceeds the last byte, break the loop
-        if (current_byte_address > last_byte) break;
-
+    while (current_byte_address <= last_byte) {
         // Run the watchdog log messages
         if (comptime watchdog_logging) watchdog();
 
