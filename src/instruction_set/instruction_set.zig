@@ -1,4 +1,5 @@
-pub const variables = @import("variables.zig");
+pub const variables  = @import("variables.zig");
+pub const arithmetic = @import("arithmetic.zig");
 
 
 //- `stt`|`0x01` : ; Initiate the stack frame
@@ -52,4 +53,7 @@ pub const InstructionSet = enum(u8) {
 
     /// End the current stack frame
     END = 0x07,
+
+    /// Add to the currently loaded variable
+    ADD = 0x10,
 };

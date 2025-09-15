@@ -2,6 +2,7 @@ const std = @import("std");
 
 const hardware = @import("../hardware/hardware.zig");
     const stack = hardware.stack;
+    const registers = hardware.registers;
 
 const globals = @import("../globals.zig");
     const CurrentVariableFrame = globals.CurrentVariableFrame;
@@ -41,7 +42,7 @@ pub fn exec_set() void {
 
     // Get the variable value
     current_byte_address += 1;
-    const variable_value: usize = @as(*usize, @ptrFromInt(current_byte_address)).*;
+    const variable_value: default_variable_size = @as(*default_variable_size, @ptrFromInt(current_byte_address)).*;
 
     // Construct the new variable
     current_variable_frame.inner[@intCast(variable_index)].value = variable_value;
@@ -60,10 +61,22 @@ pub fn exec_lod() void {
 
     // Set %r10 to the value in this buffer
     asm volatile (
-        \\ mov %[last_address], %r10
+        "mov %[last_address], %r10"
         :
         : [last_address] "r" (current_variable_frame.inner[variable_index].value)
+        : "r10", "memory"
     );
+}
+
+pub fn exec_ret() void {
+    // Get the value in %r10
+    const loaded_value: default_variable_size = asm volatile ("" : [value] "={r10}" (-> default_variable_size));
+
+    // Pop the address buffer
+    const last_address = address_buffer.pop_address();
+
+    // Set the last address to the loaded value
+    @as(*default_variable_size, @ptrFromInt(last_address)).* = loaded_value;
 }
 
 pub fn exec_end() void {

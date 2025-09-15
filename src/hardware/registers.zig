@@ -1,1 +1,1 @@
-pub const working_register: []const u8 = "%r10";
+pub const working_register: []const u8 = "r10";
