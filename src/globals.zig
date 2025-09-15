@@ -16,6 +16,8 @@ export var current_byte_address: usize = 0;
 // ======================
 const maximum_variable_count: comptime_int = 32;
 
+export var loaded_variable_value: usize = 0;
+
 export var current_variable_frame: CurrentVariableFrame = CurrentVariableFrame.init();
 export var caller_variable_frames: CallerVariableFrames = undefined;
 export var address_buffer: AddressBuffer = AddressBuffer.init();

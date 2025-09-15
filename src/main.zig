@@ -35,7 +35,8 @@ var last_byte: usize = undefined;
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
     std.debug.print("\nCurrent Char: {d}\n", .{@as(*i8, @ptrFromInt(current_byte_address)).*});
-    std.debug.print("\nCurrent variable frame\n", .{});
+    std.debug.print("Load register value: {d}\n", .{asm volatile ("" : [ret] "={r10}" (->usize))});
+    std.debug.print("Current variable frame\n", .{});
     std.debug.print("  len: {d}\n", .{current_variable_frame.length});
     var i: usize = 0;
     while (i < current_variable_frame.length) {
@@ -60,7 +61,13 @@ noinline fn execute_program() void {
 
             @intFromEnum(InstructionSet.SET) => instruction_set.variables.exec_set(),
 
+            @intFromEnum(InstructionSet.LOD) => instruction_set.variables.exec_lod(),
+
+            @intFromEnum(InstructionSet.RET) => instruction_set.variables.exec_ret(),
+
             @intFromEnum(InstructionSet.END) => instruction_set.variables.exec_end(),
+
+            @intFromEnum(InstructionSet.ADD) => instruction_set.arithmetic.exec_add(),
 
             else => {},
         }

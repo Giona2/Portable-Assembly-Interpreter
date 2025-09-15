@@ -6,6 +6,7 @@ const globals = @import("../globals.zig");
     const CallerVariableFrames = globals.CallerVariableFrames;
     const AddressBuffer = globals.AddressBuffer;
 
+    extern var loaded_variable_value: usize;
     extern var current_variable_frame: CurrentVariableFrame;
     extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
@@ -17,16 +18,10 @@ const default_variable_size = @import("variables.zig").default_variable_size;
 pub fn exec_add() void {
     // Move to the value to add to
     current_byte_address += 1;
-    const added_value = @as(*default_variable_size, @ptrFromInt(current_variable_frame)).*;
+    const added_value = @as(*default_variable_size, @ptrFromInt(current_byte_address)).*;
 
-    // Add this value to the loaded register
-    asm volatile (
-        "add %[added_value], %r10"
-        :
-        : [added_value] "r" (added_value)
-        : "memory", "r10"
-    );
+    loaded_variable_value += @intCast(added_value);
 
     // Move to the last byte in the declaration
-    current_byte_address += @sizeOf(default_variable_size);
+    current_byte_address += @sizeOf(default_variable_size)-1;
 }

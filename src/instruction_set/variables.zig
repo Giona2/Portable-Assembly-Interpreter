@@ -9,6 +9,7 @@ const globals = @import("../globals.zig");
     const CallerVariableFrames = globals.CallerVariableFrames;
     const AddressBuffer = globals.AddressBuffer;
 
+    extern var loaded_variable_value: usize;
     extern var current_variable_frame: CurrentVariableFrame;
     extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
@@ -45,10 +46,10 @@ pub fn exec_set() void {
     const variable_value: default_variable_size = @as(*default_variable_size, @ptrFromInt(current_byte_address)).*;
 
     // Construct the new variable
-    current_variable_frame.inner[@intCast(variable_index)].value = variable_value;
+    current_variable_frame.inner[@intCast(variable_index)].value = @intCast(variable_value);
 
     // Move to the next instruction
-    current_byte_address += @sizeOf(default_variable_size);
+    current_byte_address += @sizeOf(default_variable_size)-1;
 }
 
 pub fn exec_lod() void {
@@ -59,18 +60,13 @@ pub fn exec_lod() void {
     // Add the address of that variable in the variable buffer to the address buffer
     address_buffer.push_address(@intFromPtr(&current_variable_frame.inner[variable_index].value));
 
-    // Set %r10 to the value in this buffer
-    asm volatile (
-        "mov %[last_address], %r10"
-        :
-        : [last_address] "r" (current_variable_frame.inner[variable_index].value)
-        : "r10", "memory"
-    );
+    // Set the loaded register
+    loaded_variable_value = current_variable_frame.inner[variable_index].value;
 }
 
 pub fn exec_ret() void {
     // Get the value in %r10
-    const loaded_value: default_variable_size = asm volatile ("" : [value] "={r10}" (-> default_variable_size));
+    const loaded_value: default_variable_size = @intCast(loaded_variable_value);
 
     // Pop the address buffer
     const last_address = address_buffer.pop_address();
