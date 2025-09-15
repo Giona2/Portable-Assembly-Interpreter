@@ -31,7 +31,7 @@ pub fn exec_new() void {
 
     current_byte_address += 1;
 
-    current_variable_frame.inner[current_variable_frame.length-1].size  = @as(*i8, @ptrFromInt(current_byte_address)).*;
+    current_variable_frame.inner[current_variable_frame.length-1].size = @as(*i8, @ptrFromInt(current_byte_address)).*;
 }
 
 pub fn exec_set() void {
@@ -51,7 +51,19 @@ pub fn exec_set() void {
 }
 
 pub fn exec_lod() void {
+    // Get the variable index
+    current_byte_address += 1;
+    const variable_index: u8 = @as(*u8, @ptrFromInt(current_byte_address)).*;
 
+    // Add the address of that variable in the variable buffer to the address buffer
+    address_buffer.push_address(@intFromPtr(&current_variable_frame.inner[variable_index].value));
+
+    // Set %r10 to the value in this buffer
+    asm volatile (
+        \\ mov %[last_address], %r10
+        :
+        : [last_address] "r" (current_variable_frame.inner[variable_index].value)
+    );
 }
 
 pub fn exec_end() void {
