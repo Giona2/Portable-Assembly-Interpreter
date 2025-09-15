@@ -51,6 +51,9 @@ pub inline fn exec_set() void {
     current_byte_address += @sizeOf(default_variable_size);
 }
 
+pub inline fn exec_lod() void {
+}
+
 pub inline fn exec_end() void {
     asm volatile (
         \\ mov %rbp, %rsp

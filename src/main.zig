@@ -29,7 +29,7 @@ var last_byte: usize = undefined;
 // =================
 // === Functions ===
 // =================
-pub const watchdog_logging: bool = false;
+pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
     std.debug.print("\n============================\n", .{});
 
@@ -61,7 +61,7 @@ noinline fn execute_program() void {
         if (current_byte_address > last_byte) break;
 
         // Run the watchdog log messages
-        if(comptime watchdog_logging) watchdog();
+        if (comptime watchdog_logging) watchdog();
 
         // Chech the current instruction
         switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
