@@ -14,14 +14,12 @@ const instruction_set = @import("instruction_set/instruction_set.zig");
     const InstructionSet = instruction_set.InstructionSet;
 
 const globals = @import("globals.zig");
-    const CurrentVariableFrame = globals.CurrentVariableFrame;
-    const CallerVariableFrames = globals.CallerVariableFrames;
+    const VariableFrames = globals.VariableFrames;
     const FunctionArgRegisters = globals.FunctionArgRegisters;
 
-    extern var current_variable_frame: CurrentVariableFrame;
-    extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
     extern var function_arg_registers: FunctionArgRegisters;
+    extern var variable_frames: VariableFrames;
 
 
 const allocator = std.heap.page_allocator;

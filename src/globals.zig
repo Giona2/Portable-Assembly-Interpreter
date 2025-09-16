@@ -42,6 +42,10 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
     pub fn get_current_frame(self: *This) !Vec(u8) {
         return self.inner.last();
     }
+
+    pub fn deinit(self: *This) void {
+        self.inner.deinit();
+    }
 };
 // =========================
 
