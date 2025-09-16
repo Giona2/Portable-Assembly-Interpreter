@@ -44,7 +44,12 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
     }
 
     pub fn deinit(self: *This) void {
+        for (self.inner.as_slice()) |vec| {
+            vec.deinit();
+        }
+
         self.inner.deinit();
+
     }
 };
 // =========================
