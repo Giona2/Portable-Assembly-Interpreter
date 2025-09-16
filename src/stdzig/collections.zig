@@ -92,15 +92,14 @@ pub fn Vec(comptime T: type) type { return extern struct {
 
     /// Add an element to this Vec
     ///
-    /// If This is a fixed Vec, an error will be returned instead of a reallocation
-    /// This function's error, otherwise, can be safely ignored
-    pub fn push(self: *Vec(T), element: T) VecError! void {
+    /// If This is a fixed Vec, this function will panic when the capacity is surpassed
+    pub fn push(self: *Vec(T), element: T) void {
         // Increase length by one
         self.len += 1;
 
         // If the vector's size is larger than its capacity, allocate more space
         if (self.len > self.capacity) {
-            if (self.is_fixed) { return VecError.FixedArrayCannotBeResized; }
+            if (self.is_fixed) { @panic("Failed to resize Vec"); }
 
             self.capacity *= 2;
 

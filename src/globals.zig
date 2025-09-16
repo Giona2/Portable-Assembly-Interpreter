@@ -30,7 +30,7 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
     }
 
     pub fn start_new_frame(self: *This, size: usize) void {
-        const constructed_frame = Vec(u8).init_at(size);
+        const constructed_frame = Vec(u8).init_fixed(size);
 
         self.inner.push(constructed_frame);
     }

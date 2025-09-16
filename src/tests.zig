@@ -1,58 +1,20 @@
 const std = @import("std");
-const Ptr = @import("stdzig/stdzig.zig").ptr.Ptr;
-const builtin = @import("builtin");
+const Vec = @import("stdzig/stdzig.zig").collections.Vec;
 
 
-test "array-manip" {
-    var test_array = [5]u8{1, 2, 3, 4, 5};
-    std.debug.print("before: {any}\n", .{test_array});
+test "fixed-vec" {
+    var msg: Vec(u8) = Vec(u8).init_fixed(3);
 
-    for (&test_array) |*value| {
-        value.* = 0;
-    }
+    msg.push('h');
+    std.debug.print("{s}\n", .{msg.slice_ref()});
 
-    std.debug.print("after: {any}\n", .{test_array});
-}
+    msg.push('i');
+    std.debug.print("{s}\n", .{msg.slice_ref()});
 
-test "pointer-arith" {
-    const test_array = [5]u8{1, 2, 3, 4, 5};
-    const last_element_address: usize = @intFromPtr(&test_array[test_array.len-1]);
+    msg.push('\n');
+    std.debug.print("{s}\n", .{msg.slice_ref()});
 
-    var first_element_address: usize = @intFromPtr(&test_array[0]);
-    while (first_element_address <= last_element_address) {
-        const first_element: *u8 = @ptrFromInt(first_element_address);
-
-        std.debug.print("{d}\n", .{first_element.*});
-
-        first_element_address += 1;
-    }
-}
-
-test "manip-ptr" {
-    var array = [_]u8{1, 2, 3, 4, 5};
-    var first_element: Ptr(u8) = Ptr(u8).new(&array[0]);
-
-    std.debug.print("First element: {d}\n", .{first_element.ptr_ref().*});
-
-    first_element.inc(1);
-
-    std.debug.print("Next element: {d}\n", .{first_element.ptr_ref().*});
-}
-
-test "register-state" {
-    // Set the r10 register to 1
-    asm volatile (
-        \\mov $1, %r10
-        :
-        :
-        : "r10"
-    );
-
-    const r10_reg_state: i64 = asm("" : [ret] "={r10}" (-> i64));
-
-    std.debug.print("{d}", .{r10_reg_state});
-}
-
-test "comptime" {
-
+    // This will panic
+    msg.push(32);
+    std.debug.print("{s}\n", .{msg.slice_ref()});
 }
