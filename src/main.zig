@@ -88,6 +88,8 @@ noinline fn execute_program() void {
             @intFromEnum(InstructionSet.AR5) => instruction_set.function_arguments.exec_set_function_register(),
             @intFromEnum(InstructionSet.AR6) => instruction_set.function_arguments.exec_set_function_register(),
 
+            @intFromEnum(InstructionSet.CAL) => instruction_set.interface.exec_cal(),
+
             else => {},
         }
 
@@ -110,6 +112,7 @@ pub fn main() !void {
     last_byte = @intFromPtr(&file_content.slice_ref()[file_content.len-1]);
 
     caller_variable_frames = CallerVariableFrames.init();
+        defer CallerVariableFrames.
 
     // Execute the program
     execute_program();

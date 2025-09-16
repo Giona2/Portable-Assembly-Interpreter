@@ -1,6 +1,7 @@
 pub const variables  = @import("variables.zig");
 pub const arithmetic = @import("arithmetic.zig");
 pub const function_arguments = @import("function_arguments.zig");
+pub const interface = @import("interface.zig");
 
 
 //- `stt`|`0x01` : ; Initiate the stack frame
@@ -78,4 +79,7 @@ pub const InstructionSet = enum(u8) {
 
     /// Argument Register 6
     AR6 = 0xa6,
+
+    /// Call an interface function
+    CAL = 0xf0,
 };

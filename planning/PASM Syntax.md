@@ -19,17 +19,19 @@ A seventh function register will also be provided that handles the return value 
 - `stt`|`0x01` : ; Initiate the stack frame
 - `new`|`0x02` : `<size in bytes>` ; Create a new variable
 	- Finds the first variable of the requested size
-- `set`|`0x03` : `<variable index>`, `<value>` ; Set the value of an existing variable
+- `set`|`0x03` : `<size>`, `<variable index>`, `<value>` ; Set the value of an existing variable
   - The `pai` will save the size of each variable and will assume the size of the value given. No need for extra fluff
 - `drp`|`0x04` : `<variable index>` ; Drop a variable from the index
   - This does not delete the existing data, just flags it as available
-- `lod`|`0x05` : `<variable index>` ; Load the value of this variable into a register
-- `ret`|`0x06` : ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
+- `lod`|`0x05` : `<size>`, `<variable index>` ; Load the value of this variable into a register
+- `ret`|`0x06` : `<size>`, `<variable index>` ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
 - `end`|`0x07` : ; End the stack frame
 
 ## Pointer Management
 - `ptr`|`0x08` : `<variable index>` ; Loads the address of the given variable index into the given register
 - `drf`|`0x09` : `<variable index>` ; Gets the value at that pointer
+- `sap`|`0x00` : `<size>`, `<variable index>`, `<value>` ; Sets the value at the pointer stored at the given variable index
+- `lap`|`0x00` : `<size>`, `<variable index>` : Loads the value at a pointer stored at the given variable index
 
 ## Bitwise Operations
 - `and`|`0x0a` : `<variable index>` ; Bitwise And's the loaded variable to the given variable
@@ -47,3 +49,6 @@ A seventh function register will also be provided that handles the return value 
 
 ## Function Arguments
 - `ar_`|`0xa_` : `<value>` ; Sets the value of the given arugment register. `0xa0` Reflects the ret register while `0xa1-0xa6` reflects the argument registers
+
+## Interface Calls
+- `cal`|`0xf0` : `<interface call number>` ; Call an interface function
