@@ -92,8 +92,8 @@ pub fn main() !void {
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
     last_byte = @intFromPtr(&file_content.slice_ref()[file_content.len-1]);
 
-    caller_variable_frames = CallerVariableFrames.init();
-        defer CallerVariableFrames.
+    variable_frames = VariableFrames.init();
+        defer variable_frames.deinit();
 
     // Execute the program
     execute_program();
