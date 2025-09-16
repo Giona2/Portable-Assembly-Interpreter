@@ -24,14 +24,16 @@ pub fn Vec(comptime T: type) type { return extern struct {
         const capacity: usize = 1;
         const inner: [*]T = (allocator.alloc(T, capacity) catch unreachable).ptr;
 
-        return Vec(T){ .inner = inner, .len = 0, .capacity = capacity };
+        return Vec(T){ .inner = inner, .len = 0, .capacity = capacity, .is_fixed = false };
     }
 
-    /// Create a new empty Vec with a starting capacity
-    pub fn init_at(cap: usize) Vec(T) {
+    /// Create an empty Vec with a fixed capacity
+    ///
+    /// When the capacity is surpassed, This will throw an error instead of reallocating
+    pub fn init_fixed(cap: usize) Vec(T) {
         const inner: [*]T = (allocator.alloc(T, cap) catch unreachable).ptr;
 
-        return Vec(T){ .inner = inner, .len = 0, .capacity = cap };
+        return Vec(T){ .inner = inner, .len = 0, .capacity = cap, .is_fixed = true };
     }
 
     /// Creates a new Vec and sets the first `n` elements to `value`
@@ -46,7 +48,7 @@ pub fn Vec(comptime T: type) type { return extern struct {
         }
 
         // Return the vector
-        return Vec(T){ .inner = inner, .len = n, .capacity = capaticy };
+        return Vec(T){ .inner = inner, .len = n, .capacity = capaticy, .is_fixed = false };
     }
 
     /// Gets the pointer to the `n`th element in this Vec
