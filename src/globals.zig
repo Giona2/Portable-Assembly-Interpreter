@@ -109,7 +109,49 @@ pub const Variable = extern struct {
 // =========================
 
 
-// ========================
-// === Loading Variables ===
-// =========================
-// =========================
+// ==================================
+// === Function Argument Handling ===
+// ==================================
+export var function_arg_registers = FunctionArgRegisters.init();
+
+
+pub const FunctionArgRegister = enum(u8) {
+    ret  = 0,
+    reg1 = 1,
+    reg2 = 2,
+    reg3 = 3,
+    reg4 = 4,
+    reg5 = 5,
+    reg6 = 6,
+};
+
+pub const FunctionArgRegisters = extern struct {
+    ret:  usize,
+    reg1: usize,
+    reg2: usize,
+    reg3: usize,
+    reg4: usize,
+    reg5: usize,
+    reg6: usize,
+
+    pub fn init() FunctionArgRegisters { return .{
+        .ret =  0,
+        .reg1 = 0,
+        .reg2 = 0,
+        .reg3 = 0,
+        .reg4 = 0,
+        .reg5 = 0,
+        .reg6 = 0,
+    };}
+
+    pub fn set(self: *FunctionArgRegisters, target_register: FunctionArgRegister, value: usize) void { switch (target_register) {
+        .ret  => self.ret  = value,
+        .reg1 => self.reg1 = value,
+        .reg2 => self.reg2 = value,
+        .reg3 => self.reg3 = value,
+        .reg4 => self.reg4 = value,
+        .reg5 => self.reg5 = value,
+        .reg6 => self.reg6 = value,
+    }}
+};
+// ==================================

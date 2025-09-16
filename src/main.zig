@@ -16,10 +16,12 @@ const instruction_set = @import("instruction_set/instruction_set.zig");
 const globals = @import("globals.zig");
     const CurrentVariableFrame = globals.CurrentVariableFrame;
     const CallerVariableFrames = globals.CallerVariableFrames;
+    const FunctionArgRegisters = globals.FunctionArgRegisters;
 
     extern var current_variable_frame: CurrentVariableFrame;
     extern var caller_variable_frames: CallerVariableFrames;
     extern var current_byte_address: usize;
+    extern var function_arg_registers: FunctionArgRegisters;
 
 
 const allocator = std.heap.page_allocator;
@@ -34,7 +36,16 @@ var last_byte: usize = undefined;
 // =================
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
-    std.debug.print("\nCurrent Char: {d}\n", .{@as(*i8, @ptrFromInt(current_byte_address)).*});
+    std.debug.print("\nCurrent Char: {d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
+    std.debug.print("reg_args: {d}, {d}, {d}, {d}, {d}, {d}, {d}\n", .{
+        function_arg_registers.ret,
+        function_arg_registers.reg1,
+        function_arg_registers.reg2,
+        function_arg_registers.reg3,
+        function_arg_registers.reg4,
+        function_arg_registers.reg5,
+        function_arg_registers.reg6,
+    });
     std.debug.print("Load register value: {d}\n", .{asm volatile ("" : [ret] "={r10}" (->usize))});
     std.debug.print("Current variable frame\n", .{});
     std.debug.print("  len: {d}\n", .{current_variable_frame.length});
@@ -68,6 +79,14 @@ noinline fn execute_program() void {
             @intFromEnum(InstructionSet.END) => instruction_set.variables.exec_end(),
 
             @intFromEnum(InstructionSet.ADD) => instruction_set.arithmetic.exec_add(),
+
+            @intFromEnum(InstructionSet.AR0) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR1) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR2) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR3) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR4) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR5) => instruction_set.function_arguments.exec_set_function_register(),
+            @intFromEnum(InstructionSet.AR6) => instruction_set.function_arguments.exec_set_function_register(),
 
             else => {},
         }

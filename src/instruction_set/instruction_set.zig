@@ -1,5 +1,6 @@
 pub const variables  = @import("variables.zig");
 pub const arithmetic = @import("arithmetic.zig");
+pub const function_arguments = @import("function_arguments.zig");
 
 
 //- `stt`|`0x01` : ; Initiate the stack frame
@@ -56,4 +57,25 @@ pub const InstructionSet = enum(u8) {
 
     /// Add to the currently loaded variable
     ADD = 0x10,
+
+    /// Return Register
+    AR0 = 0xa0,
+
+    /// Argument Register 1
+    AR1 = 0xa1,
+
+    /// Argument Register 1
+    AR2 = 0xa2,
+
+    /// Argument Register 3
+    AR3 = 0xa3,
+
+    /// Argument Register 4
+    AR4 = 0xa4,
+
+    /// Argument Register 5
+    AR5 = 0xa5,
+
+    /// Argument Register 6
+    AR6 = 0xa6,
 };

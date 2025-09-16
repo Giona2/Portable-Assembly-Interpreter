@@ -44,3 +44,6 @@ A seventh function register will also be provided that handles the return value 
 - `sub`|`0x11` : `<variable index>`
 - `mul`|`0x12` : `<variable index>`
 - `div`|`0x13` : `<variable index>`
+
+## Function Arguments
+- `ar_`|`0xa_` : `<value>` ; Sets the value of the given arugment register. `0xa0` Reflects the ret register while `0xa1-0xa6` reflects the argument registers
