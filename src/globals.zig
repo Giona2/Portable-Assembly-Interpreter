@@ -15,14 +15,34 @@ export var current_byte_address: usize = 0;
 // === Stack Handling ===
 // ======================
 const loaded_variable_size: comptime_int = 8;
-export var loaded_variable_value: [loaded_variable_size]u8 = [_]u8{0}**loaded_variable_value;
+export var loaded_variable: LoadedVariable = LoadedVariable.init();
+
+pub const LoadedVariable = extern struct { const This: type = LoadedVariable;
+    inner: [loaded_variable_size]u8,
+    operation_size: u8,
+
+    pub fn init() This { return .{
+        .inner = [_]u8{0}**loaded_variable_size,
+        .operation_size = 0,
+    };}
+
+    pub fn set(self: *This, value: []u8) void {
+        // Copy the data to the loaded buffer
+        for (value, 0..) |byte, index| {
+            self.inner[index] = byte;
+        }
+
+        // Set the operation size
+        self.operation_size = value.len;
+    }
+};
 
 export var variable_frames: VariableFrames = undefined;
 
 
 pub const VariableFrames = extern struct { const This: type = VariableFrames;
     pub const frame_size = 512;
-    pub const frame_size_type: type = u16;
+    pub const variable_index_type: type = u16;
 
     inner: Vec(Vec(u8)),
 
@@ -30,7 +50,7 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
         return This{ .inner = Vec(Vec(u8)).init() };
     }
 
-    pub fn start_new_frame(self: *This, size: frame_size_type) void {
+    pub fn start_new_frame(self: *This, size: variable_index_type) void {
         const constructed_frame = Vec(u8).init_fixed(@intCast(size));
 
         self.inner.push(constructed_frame);
@@ -40,7 +60,7 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
         self.inner.shave();
     }
 
-    pub fn get_current_frame(self: *This) !Vec(u8) {
+    pub fn get_current_frame(self: *This) !*Vec(u8) {
         return self.inner.last();
     }
 
