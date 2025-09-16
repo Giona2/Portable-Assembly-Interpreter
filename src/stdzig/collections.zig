@@ -6,6 +6,7 @@ const allocator = std.heap.page_allocator;
 
 pub const VecError = error {
     InvalidIndexGiven,
+    FixedArrayCannotBeResized,
 };
 
 
@@ -16,6 +17,7 @@ pub fn Vec(comptime T: type) type { return extern struct {
     inner: [*]T,
     len: usize,
     capacity: usize,
+    is_fixed: bool,
 
     /// Create a new empty Vec
     pub fn init() Vec(T) {
@@ -23,6 +25,13 @@ pub fn Vec(comptime T: type) type { return extern struct {
         const inner: [*]T = (allocator.alloc(T, capacity) catch unreachable).ptr;
 
         return Vec(T){ .inner = inner, .len = 0, .capacity = capacity };
+    }
+
+    /// Create a new empty Vec with a starting capacity
+    pub fn init_at(cap: usize) Vec(T) {
+        const inner: [*]T = (allocator.alloc(T, cap) catch unreachable).ptr;
+
+        return Vec(T){ .inner = inner, .len = 0, .capacity = cap };
     }
 
     /// Creates a new Vec and sets the first `n` elements to `value`
@@ -80,12 +89,17 @@ pub fn Vec(comptime T: type) type { return extern struct {
     }
 
     /// Add an element to this Vec
-    pub fn push(self: *Vec(T), element: T) void {
+    ///
+    /// If This is a fixed Vec, an error will be returned instead of a reallocation
+    /// This function's error, otherwise, can be safely ignored
+    pub fn push(self: *Vec(T), element: T) VecError! void {
         // Increase length by one
         self.len += 1;
 
         // If the vector's size is larger than its capacity, allocate more space
-        if (self.len >= self.capacity) {
+        if (self.len > self.capacity) {
+            if (self.is_fixed) { return VecError.FixedArrayCannotBeResized; }
+
             self.capacity *= 2;
 
             self.inner = @ptrCast(allocator.realloc(self.inner[0..self.len], self.capacity)

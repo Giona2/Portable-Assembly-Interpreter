@@ -37,23 +37,6 @@ var last_byte: usize = undefined;
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
     std.debug.print("\nCurrent Char: {d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
-    std.debug.print("reg_args: {d}, {d}, {d}, {d}, {d}, {d}, {d}\n", .{
-        function_arg_registers.ret,
-        function_arg_registers.reg1,
-        function_arg_registers.reg2,
-        function_arg_registers.reg3,
-        function_arg_registers.reg4,
-        function_arg_registers.reg5,
-        function_arg_registers.reg6,
-    });
-    std.debug.print("Load register value: {d}\n", .{asm volatile ("" : [ret] "={r10}" (->usize))});
-    std.debug.print("Current variable frame\n", .{});
-    std.debug.print("  len: {d}\n", .{current_variable_frame.length});
-    var i: usize = 0;
-    while (i < current_variable_frame.length) {
-        std.debug.print("  {d} [{d}]\n", .{current_variable_frame.inner[i].value, current_variable_frame.inner[i].size});
-        i+=1;
-    }
 }
 
 /// Emulated process to execute the given source file

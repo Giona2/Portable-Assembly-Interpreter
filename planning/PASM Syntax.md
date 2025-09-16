@@ -16,7 +16,7 @@ A seventh function register will also be provided that handles the return value 
 
 # Instruction Set
 ## Stack/Variable management
-- `stt`|`0x01` : ; Initiate the stack frame
+- `stt`|`0x01` : `<size in bytes>` ; Initiate the stack frame at a particular size
 - `new`|`0x02` : `<size in bytes>` ; Create a new variable
 	- Finds the first variable of the requested size
 - `set`|`0x03` : `<size>`, `<variable index>`, `<value>` ; Set the value of an existing variable
