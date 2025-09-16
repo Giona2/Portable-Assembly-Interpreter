@@ -32,32 +32,29 @@ pub const InstructionSet = enum(u8) {
     /// Initiate the stack frame
     STT = 0x1,
 
-    /// Create a new variable
-    NEW = 0x2,
-
     /// Set the value of an existing variable
-    SET = 0x3,
+    SET = 0x2,
 
     /// Drop a variable
     ///
     /// Note this does not delete any data, only flags that space as writable
-    DRP = 0x4,
+    DRP = 0x3,
 
     /// Load the value of this variable into a register
-    LOD = 0x5,
+    LOD = 0x4,
 
     /// Return the value in the loaded register to the given variable
     ///
     /// Set the register to the address of the variable given
     ///
     /// Set to zero if none is provided
-    RET = 0x06,
+    RET = 0x05,
 
     /// End the current stack frame
-    END = 0x07,
+    END = 0x06,
 
     /// Add to the currently loaded variable
-    ADD = 0x10,
+    ADD = 0x11,
 
     /// Argument Register 1
     AR1 = 0xa1,

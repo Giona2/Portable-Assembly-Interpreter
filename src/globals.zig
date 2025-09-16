@@ -21,7 +21,8 @@ export var variable_frames: VariableFrames = undefined;
 
 
 pub const VariableFrames = extern struct { const This: type = VariableFrames;
-    const frame_size = 512;
+    pub const frame_size = 512;
+    pub const frame_size_type: type = u16;
 
     inner: Vec(Vec(u8)),
 
@@ -29,8 +30,8 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
         return This{ .inner = Vec(Vec(u8)).init() };
     }
 
-    pub fn start_new_frame(self: *This, size: usize) void {
-        const constructed_frame = Vec(u8).init_fixed(size);
+    pub fn start_new_frame(self: *This, size: frame_size_type) void {
+        const constructed_frame = Vec(u8).init_fixed(@intCast(size));
 
         self.inner.push(constructed_frame);
     }
