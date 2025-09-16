@@ -39,7 +39,7 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
         self.inner.shave();
     }
 
-    pub fn get_current_frame(self: *This) ! *Vec(u8) {
+    pub fn get_current_frame(self: *This) !Vec(u8) {
         return self.inner.last();
     }
 };
@@ -53,7 +53,6 @@ export var function_arg_registers = FunctionArgRegisters.init();
 
 
 pub const FunctionArgRegister = enum(u8) {
-    ret  = 0,
     reg1 = 1,
     reg2 = 2,
     reg3 = 3,
@@ -65,7 +64,6 @@ pub const FunctionArgRegister = enum(u8) {
 pub const FunctionArgRegisters = extern struct {
     const This: type = FunctionArgRegisters;
 
-    ret:  usize,
     reg1: usize,
     reg2: usize,
     reg3: usize,
@@ -74,7 +72,6 @@ pub const FunctionArgRegisters = extern struct {
     reg6: usize,
 
     pub fn init() This { return .{
-        .ret =  0,
         .reg1 = 0,
         .reg2 = 0,
         .reg3 = 0,
@@ -84,7 +81,6 @@ pub const FunctionArgRegisters = extern struct {
     };}
 
     pub fn set(self: *This, target_register: FunctionArgRegister, value: usize) void { switch (target_register) {
-        .ret  => self.ret  = value,
         .reg1 => self.reg1 = value,
         .reg2 => self.reg2 = value,
         .reg3 => self.reg3 = value,

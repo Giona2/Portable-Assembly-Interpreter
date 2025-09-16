@@ -59,9 +59,6 @@ pub const InstructionSet = enum(u8) {
     /// Add to the currently loaded variable
     ADD = 0x10,
 
-    /// Return Register
-    AR0 = 0xa0,
-
     /// Argument Register 1
     AR1 = 0xa1,
 
