@@ -35,6 +35,10 @@ pub const LoadedVariable = extern struct { const This: type = LoadedVariable;
         // Set the operation size
         self.operation_size = @intCast(value.len);
     }
+
+    pub fn as_usize(self: *This) *usize {
+        return @alignCast(std.mem.bytesAsValue(usize, self.inner[0..self.operation_size]));
+    }
 };
 
 export var variable_frames: VariableFrames = undefined;

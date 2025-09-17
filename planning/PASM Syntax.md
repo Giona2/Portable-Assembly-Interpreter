@@ -6,47 +6,45 @@ That being said, here's a comprehensive list of what I'd like to accomplish:
 - Basic set of instructions for bitwise operations, basic arithmetic, and control flow
 - First iteration of my interface API
 
+# SEE HERE
+In its current stage, almost all instructions should take a size (in bytes) for operation. When the first bit in that byte is 1 (0x8_), this indicates that the following variable index should be treated as a pointer.
+
 # Interface API
 The interface will be baked into the interpreter. The alternative would've been making it in iasm, but I'd have to completely flesh out the language first which is entirely unrealistic.  
 I'll be adding API functionality as-needed
 
 # Function Management
 Six function arg registers will be available for the sole purpose of passing arguments to functions and handling return statements.  
-A seventh function register will also be provided that handles the return value of the function
+**The loaded value now acts as the return register**
 
 # Instruction Set
 ## Stack/Variable management
 - `stt`|`0x01` : `<size in bytes>` ; Initiate the stack frame
 - `set`|`0x02` : `<size>`, `<variable index>`, `<value>` ; Set the value of an existing variable
   - The `pai` will save the size of each variable and will assume the size of the value given. No need for extra fluff
-- `drp`|`0x03` : `<variable index>` ; Drop a variable from the index
-  - This does not delete the existing data, just flags it as available
-- `lod`|`0x04` : `<size>`, `<variable index>` ; Load the value of this variable into a register
-- `ret`|`0x05` : `<variable index>` ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
-- `end`|`0x06` : ; End the stack frame
+- `lod`|`0x03` : `<size>`, `<variable index>` ; Load the value of this variable into a register
+- `ret`|`0x04` : `<size>`, `<variable index>` ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
+- `end`|`0x05` : ; End the stack frame
 
 ## Pointer Management
-- `ptr`|`0x07` : `<variable index>` ; Loads the address of the given variable index into the given register
-- `drf`|`0x08` : `<variable index>` ; Gets the value at that pointer
-- `sap`|`0x09` : `<size>`, `<variable index>`, `<value>` ; Sets the value at the pointer stored at the given variable index
-- `lap`|`0x0a` : `<size>`, `<variable index>` : Loads the value at a pointer stored at the given variable index
+- `ptr`|`0x06` : `<variable index>` ; Loads the address of the given variable index into the given register
 
 ## Bitwise Operations
-- `and`|`0x0b` : `<variable index>` ; Bitwise And's the loaded variable to the given variable
-- `_or`|`0x0c` : `<variable index>`
-- `xor`|`0x0d` : `<variable index>`
-- `not`|`0x0e` : `<variable index>`
-- `shl`|`0x0f` : `<variable index>`
-- `shr`|`0x10` : `<variable index>`
+- `and`|`0x07` : `<size>`, `<variable index>` ; Bitwise And's the loaded variable to the given variable
+- `_or`|`0x08` : `<size>`, `<variable index>`
+- `xor`|`0x09` : `<size>`, `<variable index>`
+- `not`|`0x0a` : `<size>`, `<variable index>`
+- `shl`|`0x0b` : `<size>`, `<variable index>`
+- `shr`|`0x0c` : `<size>`, `<variable index>`
 
 ## Arithmetic Operations
-- `add`|`0x11` : `<variable index>`
-- `sub`|`0x12` : `<variable index>`
-- `mul`|`0x13` : `<variable index>`
-- `div`|`0x14` : `<variable index>`
+- `add`|`0x0d` : `<size>`, `<variable index>`
+- `sub`|`0x0e` : `<size>`, `<variable index>`
+- `mul`|`0x0f` : `<size>`, `<variable index>`
+- `div`|`0x10` : `<size>`, `<variable index>`
 
 ## Function Arguments
-- `ar_`|`0xa_` : `<value>` ; Sets the value of the given arugment register. `0xa0` Reflects the ret register while `0xa1-0xa6` reflects the argument registers
+- `ar_`|`0xa_` : `<size>`, `<variable index>` ; Sets the value of the given arugment register. `0xa0` Reflects the ret register while `0xa1-0xa6` reflects the argument registers
 
 ## Interface Calls
 - `cal`|`0xf0` : `<interface call number>` ; Call an interface function

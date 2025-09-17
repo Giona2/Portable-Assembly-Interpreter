@@ -91,7 +91,7 @@ pub fn main() !void {
     hardware.platform.check_hardware_support();
 
     // Get the target file's content
-    const target_file = try fs.File.open("testing/example.pasm");
+    const target_file = try fs.File.open("testing/example.pbin");
     file_content = target_file.read();
         defer file_content.deinit();
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
