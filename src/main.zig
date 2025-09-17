@@ -16,10 +16,12 @@ const instruction_set = @import("instruction_set/instruction_set.zig");
 const globals = @import("globals.zig");
     const VariableFrames = globals.VariableFrames;
     const FunctionArgRegisters = globals.FunctionArgRegisters;
+    const LoadedVariable = globals.LoadedVariable;
 
     extern var current_byte_address: usize;
     extern var function_arg_registers: FunctionArgRegisters;
     extern var variable_frames: VariableFrames;
+    extern var loaded_variable: LoadedVariable;
 
 
 const allocator = std.heap.page_allocator;
@@ -35,6 +37,12 @@ var last_byte: usize = undefined;
 pub const watchdog_logging: bool = true;
 pub noinline fn watchdog() void {
     std.debug.print("\nCurrent Char: {d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
+    if (variable_frames.inner.len > 0) {
+        for ((variable_frames.get_current_frame() catch unreachable).slice_ref()) |variable| {
+            std.debug.print("{d}\n", .{variable});
+        }
+    }
+    std.debug.print("Loaded register: {any}\n", .{loaded_variable.inner});
 }
 
 /// Emulated process to execute the given source file
@@ -49,8 +57,6 @@ noinline fn execute_program() void {
         switch (@as(*u8, @ptrFromInt(current_byte_address)).*) {
             @intFromEnum(InstructionSet.STT) => instruction_set.variables.exec_stt(),
 
-            @intFromEnum(InstructionSet.NEW) => instruction_set.variables.exec_new(),
-
             @intFromEnum(InstructionSet.SET) => instruction_set.variables.exec_set(),
 
             @intFromEnum(InstructionSet.LOD) => instruction_set.variables.exec_lod(),
@@ -61,7 +67,6 @@ noinline fn execute_program() void {
 
             @intFromEnum(InstructionSet.ADD) => instruction_set.arithmetic.exec_add(),
 
-            @intFromEnum(InstructionSet.AR0) => instruction_set.function_arguments.exec_set_function_register(),
             @intFromEnum(InstructionSet.AR1) => instruction_set.function_arguments.exec_set_function_register(),
             @intFromEnum(InstructionSet.AR2) => instruction_set.function_arguments.exec_set_function_register(),
             @intFromEnum(InstructionSet.AR3) => instruction_set.function_arguments.exec_set_function_register(),
@@ -97,6 +102,4 @@ pub fn main() !void {
 
     // Execute the program
     execute_program();
-
-    if (comptime watchdog_logging) watchdog();
 }

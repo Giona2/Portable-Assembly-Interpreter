@@ -22,7 +22,7 @@ A seventh function register will also be provided that handles the return value 
 - `drp`|`0x03` : `<variable index>` ; Drop a variable from the index
   - This does not delete the existing data, just flags it as available
 - `lod`|`0x04` : `<size>`, `<variable index>` ; Load the value of this variable into a register
-- `ret`|`0x05` : `<size>`, `<variable index>` ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
+- `ret`|`0x05` : `<variable index>` ; Return the value in the loaded register to the given variable. Set the register to the address of the variable given. Set to zero if none is provided
 - `end`|`0x06` : ; End the stack frame
 
 ## Pointer Management

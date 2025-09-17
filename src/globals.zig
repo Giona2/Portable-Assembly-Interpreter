@@ -33,7 +33,7 @@ pub const LoadedVariable = extern struct { const This: type = LoadedVariable;
         }
 
         // Set the operation size
-        self.operation_size = value.len;
+        self.operation_size = @intCast(value.len);
     }
 };
 
@@ -51,7 +51,8 @@ pub const VariableFrames = extern struct { const This: type = VariableFrames;
     }
 
     pub fn start_new_frame(self: *This, size: variable_index_type) void {
-        const constructed_frame = Vec(u8).init_fixed(@intCast(size));
+        var constructed_frame = Vec(u8).init_fixed(@intCast(size));
+        constructed_frame.len = @intCast(size);
 
         self.inner.push(constructed_frame);
     }
