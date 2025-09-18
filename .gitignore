@@ -4,3 +4,4 @@
 /.run.fish
 /.zig-cache
 /zig-out
+/out.log
