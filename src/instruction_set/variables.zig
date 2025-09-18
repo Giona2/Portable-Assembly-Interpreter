@@ -70,15 +70,28 @@ pub fn exec_lod() void {
     current_byte_address += 1;
     const operation_config = OperationConfig.init_here();
 
-    // Get the variable pointer
-    current_byte_address += 1;
-    const variable_pointer = get_variable_pointer_here(@intCast(operation_config.size));
+    // Get the value to load
+    if (operation_config.is_direct()) {
+        // 03 14 98 34 00 00
 
-    // Write this to the loading register
-    loaded_variable.set(variable_pointer);
+        // Copy the data into the loaded variable
+        for (0..operation_config.size) |i| {
+            loaded_variable.inner[i] = @as(*u8, @ptrFromInt(current_byte_address + 1));
+            current_byte_address += 1;
+        }
 
-    // Move the current byte to the end of the instrution
-    current_byte_address += @sizeOf(VariableFrames.variable_index_type) - 1;
+        // Set the operation size
+        loaded_variable.operation_size = operation_config.size;
+    } else {
+        current_byte_address += 1;
+        const variable_pointer = get_variable_pointer_here(@intCast(operation_config.size));
+
+        // Write this to the loading register
+        loaded_variable.set(variable_pointer);
+
+        // Move the current byte to the end of the instrution
+        current_byte_address += @sizeOf(VariableFrames.variable_index_type) - 1;
+    }
 }
 
 pub fn exec_ret() void {
