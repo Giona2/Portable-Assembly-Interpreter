@@ -76,7 +76,7 @@ pub fn exec_lod() void {
 
         // Copy the data into the loaded variable
         for (0..operation_config.size) |i| {
-            loaded_variable.inner[i] = @as(*u8, @ptrFromInt(current_byte_address + 1));
+            loaded_variable.inner[i] = @as(*u8, @ptrFromInt(current_byte_address + 1)).*;
             current_byte_address += 1;
         }
 

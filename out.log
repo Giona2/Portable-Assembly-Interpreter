@@ -3,25 +3,8 @@ Current Char: 1
 Loaded register: { 0, 0, 0, 0, 0, 0, 0, 0 }
 Found stt
 
-Current Char: 2
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-Loaded register: { 0, 0, 0, 0, 0, 0, 0, 0 }
-Found set
-using 0th variable of { 0 }
-operation config: 1
-is direct
-
 Current Char: 3
-2
+0
 0
 0
 0
@@ -32,10 +15,9 @@ Current Char: 3
 0
 0
 Loaded register: { 0, 0, 0, 0, 0, 0, 0, 0 }
-using 0th variable of { 2 }
+Found lod
 
 Current Char: 13
-2
 0
 0
 0
@@ -45,37 +27,51 @@ Current Char: 13
 0
 0
 0
-Loaded register: { 2, 0, 0, 0, 0, 0, 0, 0 }
+0
+Loaded register: { 0, 0, 0, 0, 0, 0, 0, 0 }
 in add
 is direct
-Adding u8@7f9d4656200e
-
-Current Char: 4
-2
-0
-0
-0
-0
-0
-0
-0
-0
-0
-Loaded register: { 4, 0, 0, 0, 0, 0, 0, 0 }
-using 0th variable of { 2 }
-
-Current Char: 5
-4
-0
-0
-0
-0
-0
-0
-0
-0
-0
-Loaded register: { 4, 0, 0, 0, 0, 0, 0, 0 }
+Adding u8@7ff1d46c4008
 
 Current Char: 0
-Loaded register: { 4, 0, 0, 0, 0, 0, 0, 0 }
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Loaded register: { 1, 0, 0, 0, 0, 0, 0, 0 }
+
+Current Char: 4
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Loaded register: { 1, 0, 0, 0, 0, 0, 0, 0 }
+using 0th variable of { 0 }
+
+Current Char: 5
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Loaded register: { 1, 0, 0, 0, 0, 0, 0, 0 }
+
+Current Char: 0
+Loaded register: { 1, 0, 0, 0, 0, 0, 0, 0 }
