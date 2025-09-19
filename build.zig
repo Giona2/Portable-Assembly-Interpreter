@@ -7,12 +7,14 @@ pub fn build(b: *std.Build) void {
     const optimize = std.builtin.OptimizeMode.ReleaseFast;
 
     // Create the executable reference
-    const exe = b.addExecutable(.{
+    const exe_mod = b.createModule(.{
         .target = target,
         .optimize = optimize,
-
+        .root_source_file = b.path("src/main.zig"),
+    });
+    const exe = b.addExecutable(.{
         .name = "pai",
-        .root_source_file = b.path("src/main.zig")
+        .root_module = exe_mod,
     });
 
     // Expose the global variables to the executable
@@ -25,12 +27,15 @@ pub fn build(b: *std.Build) void {
 /// Compiles the global variables as a static library and links them to the main executable
 fn include_globals(b: *std.Build, exe: *std.Build.Step.Compile, target: *const std.Build.ResolvedTarget, optimize: *const std.builtin.OptimizeMode) void {
     // Create the globals reference
-    const globals = b.addStaticLibrary(.{
+    const globals_mod = b.createModule(.{
         .target = target.*,
         .optimize = optimize.*,
 
-        .name = "globals",
         .root_source_file = b.path("src/globals.zig"),
+    });
+    const globals = b.addLibrary(.{
+        .name = "globals",
+        .root_module = globals_mod,
     });
 
     // Compile the globals
