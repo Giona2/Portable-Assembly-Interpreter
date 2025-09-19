@@ -14,7 +14,7 @@ const globals = @import("../globals.zig");
     extern var current_byte_address: usize;
 
 
-fn perform_operation_on_float(given_instruction: InstructionSet, value: f64) void { switch (given_instruction) {
+fn perform_operation_on_float(given_instruction: InstructionSet, value: f64) void { std.debug.print("given value: {d}\n", .{value}); switch (given_instruction) {
     InstructionSet.ADD => loaded_variable.as_f64().* += value,
     InstructionSet.SUB => loaded_variable.as_f64().* -= value,
     InstructionSet.MUL => loaded_variable.as_f64().* *= value,
@@ -32,6 +32,8 @@ fn perform_operation_on_int(given_instruction: InstructionSet, value: isize) voi
 
 
 pub fn exec_arithmetic_and_bitwise(given_instruction: InstructionSet) void {
+    std.debug.print("Found arithmetic expression\n", .{});
+
     // Get the byte size of the operation
     current_byte_address += 1;
     const operation_config = OperationConfig.init_here();

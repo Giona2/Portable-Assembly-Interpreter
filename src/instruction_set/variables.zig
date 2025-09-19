@@ -66,6 +66,8 @@ pub fn exec_set() void {
 }
 
 pub fn exec_lod() void {
+    std.debug.print("Found lod\n", .{});
+
     // Get the byte size of the operation
     current_byte_address += 1;
     const operation_config = OperationConfig.init_here();
@@ -95,6 +97,8 @@ pub fn exec_lod() void {
 }
 
 pub fn exec_ret() void {
+    std.debug.print("Found ret\n", .{});
+
     // Get the byte size of the operation
     current_byte_address += 1;
     const operation_config = OperationConfig.init_here();
