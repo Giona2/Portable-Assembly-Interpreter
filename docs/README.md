@@ -11,3 +11,5 @@ These docs assume you have the following background information...
 ---
   
 * [Introduction](introduction.md)
+* [Loading Register](loading-register.md)
+* [Variable Frame Buffers](variable-frame-buffers.md)
