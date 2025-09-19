@@ -31,10 +31,8 @@ var file_content: Vec(u8) = undefined;
 var last_byte: usize = undefined;
 
 
-// =================
-// === Functions ===
-// =================
 pub const watchdog_logging: bool = true;
+/// Program logger
 pub noinline fn watchdog() void {
     std.debug.print("\nCurrent Char: {d}\n", .{@as(*u8, @ptrFromInt(current_byte_address)).*});
     if (variable_frames.inner.len > 0) {
