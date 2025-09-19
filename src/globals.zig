@@ -36,12 +36,12 @@ pub const LoadedVariable = extern struct { const This: type = LoadedVariable;
         self.operation_size = @intCast(value.len);
     }
 
-    pub fn as_isize(self: *This) *usize {
-        return @alignCast(std.mem.bytesAsValue(isize, self.inner[0..self.operation_size]));
-    }
+    pub fn as_type(comptime T: type, self: *This) *T {
+        if (@sizeOf(@typeInfo(T)) != @sizeOf(usize)) {
+            @panic("Invalid type given. Must be usize bytes in size");
+        }
 
-    pub fn as_f64(self: *This) *f64 {
-        return @alignCast(std.mem.bytesAsValue(f64, self.inner[0..self.operation_size]));
+        return @alignCast(std.mem.bytesAsValue(T, self.inner[0..self.operation_size]));
     }
 };
 
