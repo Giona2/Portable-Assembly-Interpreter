@@ -43,6 +43,17 @@ Six function arg registers will be available for the sole purpose of passing arg
 - `mul`|`0x0f` : `<size>`, `<variable index>`
 - `div`|`0x10` : `<size>`, `<variable index>`
 
+## Control Flow
+- `cpe`|`0x11` : `<size>`, `<variable index>`, `<value>` ; Compares a variable and a value and sets the truith flag accordingly
+- `cne`|`0x12` : `<size>`, `<variable index>`, `<value>`
+- `cpg`|`0x13` : `<size>`, `<variable index>`, `<value>`
+- `cge`|`0x14` : `<size>`, `<variable index>`, `<value>`
+- `cpl`|`0x15` : `<size>`, `<variable index>`, `<value>`
+- `cle`|`0x16` : `<size>`, `<variable index>`, `<value>`
+- `jmp`|`0x17` : `<jump config>`, `<address>`
+- `jmt`|`0x18` : `<jump config>`, `<address>`
+- `jmf`|`0x19` : `<jump config>`, `<address>`
+
 ## Function Arguments
 - `ar_`|`0xa_` : `<size>`, `<variable index>` ; Sets the value of the given arugment register. `0xa0` Reflects the ret register while `0xa1-0xa6` reflects the argument registers
 
