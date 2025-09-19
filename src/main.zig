@@ -65,7 +65,7 @@ noinline fn execute_program() void {
 
             @intFromEnum(InstructionSet.END) => instruction_set.variables.exec_end(),
 
-            @intFromEnum(InstructionSet.ADD) => instruction_set.arithmetic.exec_add(),
+            @intFromEnum(InstructionSet.ADD) => instruction_set.arithmetic_and_bitwise.exec_arithmetic_and_bitwise(InstructionSet.ADD),
 
             @intFromEnum(InstructionSet.AR1) => instruction_set.function_arguments.exec_set_function_register(),
             @intFromEnum(InstructionSet.AR2) => instruction_set.function_arguments.exec_set_function_register(),

@@ -14,16 +14,20 @@ const globals = @import("../globals.zig");
     extern var current_byte_address: usize;
 
 
-fn perform_operation(comptime T: type, instruction: InstructionSet, value: T) void { switch (instruction) {
-    InstructionSet.ADD => loaded_variable.as_type(T).* += value,
-    InstructionSet.SUB => loaded_variable.as_type(T).* -= value,
-    InstructionSet.MUL => loaded_variable.as_type(T).* *= value,
-    InstructionSet.DIV => {
-        if (T != f64) @panic("The DIV instruction only supports floating point values");
+fn perform_operation_on_float(given_instruction: InstructionSet, value: f64) void { switch (given_instruction) {
+    InstructionSet.ADD => loaded_variable.as_f64().* += value,
+    InstructionSet.SUB => loaded_variable.as_f64().* -= value,
+    InstructionSet.MUL => loaded_variable.as_f64().* *= value,
+    InstructionSet.DIV => loaded_variable.as_f64().* /= value,
+    else => { @panic("unsupported"); }
+}}
 
-        loaded_variable.as_type(T).* /= value;
-    },
-    else => { @panic("Invalid instruction given"); }
+fn perform_operation_on_int(given_instruction: InstructionSet, value: isize) void { switch (given_instruction) {
+    InstructionSet.ADD => loaded_variable.as_isize().* += value,
+    InstructionSet.SUB => loaded_variable.as_isize().* -= value,
+    InstructionSet.MUL => loaded_variable.as_isize().* *= value,
+    InstructionSet.DIV => @panic("The DIV instruction only supports floating point numbers"),
+    else => { @panic("unsupported"); }
 }}
 
 
@@ -40,11 +44,11 @@ pub fn exec_arithmetic_and_bitwise(given_instruction: InstructionSet) void {
 
         // Add the value given to the loaded variable
         if (operation_config.is_float()) {
-            const added_value = std.mem.readVarInt(f64, added_value_raw[0..operation_config.size], .little);
-            perform_operation(f64, given_instruction, added_value);
+            const added_value: f64 = @bitCast(std.mem.readVarInt(u64, added_value_raw[0..operation_config.size], .little));
+            perform_operation_on_float(given_instruction, added_value);
         } else {
             const added_value = std.mem.readVarInt(isize, added_value_raw[0..operation_config.size], .little);
-            perform_operation(isize, given_instruction, added_value);
+            perform_operation_on_int(given_instruction, added_value);
         }
 
         current_byte_address += operation_config.size - 1;
@@ -54,9 +58,9 @@ pub fn exec_arithmetic_and_bitwise(given_instruction: InstructionSet) void {
 
         // Add the loaded register to the variable content given
         if (operation_config.is_float()) {
-            perform_operation(f64, given_instruction, std.mem.readVarInt(f64, variable_pointer, .little));
+            perform_operation_on_float(given_instruction, @bitCast(std.mem.readVarInt(u64, variable_pointer, .little)));
         } else {
-            perform_operation(isize, given_instruction, std.mem.readVarInt(isize, variable_pointer, .little));
+            perform_operation_on_int(given_instruction, std.mem.readVarInt(isize, variable_pointer, .little));
         }
 
         // Move the current byte to the end of the instruction

@@ -1,5 +1,5 @@
 pub const variables  = @import("variables.zig");
-pub const arithmetic = @import("arithmetic.zig");
+pub const arithmetic_and_bitwise = @import("arithmetic_and_bitwise.zig");
 pub const function_arguments = @import("function_arguments.zig");
 pub const interface = @import("interface.zig");
 
