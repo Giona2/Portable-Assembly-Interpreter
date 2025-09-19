@@ -40,6 +40,9 @@ const globals = @import("../globals.zig");
 
 /// PIASM instruction set
 pub const InstructionSet = enum(u8) {
+    // ==============
+    // == variable ==
+    // ==============
     /// Initiate the stack frame
     STT = 0x1,
 
@@ -59,9 +62,28 @@ pub const InstructionSet = enum(u8) {
     /// End the current stack frame
     END = 0x05,
 
+    // =============
+    // == bitwise ==
+    // =============
+
+    // ================
+    // == arithmetic ==
+    // ================
     /// Add to the currently loaded variable
     ADD = 0x0d,
 
+    /// Subtract from the currently loaded variable
+    SUB = 0x0e,
+
+    /// Multiply to the currently loaded variable
+    MUL = 0x0f,
+
+    /// Divide from the currently loaded variable
+    DIV = 0x10,
+
+    // ===============
+    // == functions ==
+    // ===============
     /// Argument Register 1
     AR1 = 0xa1,
 
