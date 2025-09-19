@@ -65,6 +65,17 @@ pub const InstructionSet = enum(u8) {
     // =============
     // == bitwise ==
     // =============
+    AND = 0x07,
+
+    _OR = 0x08,
+
+    XOR = 0x09,
+
+    NOT = 0x0a,
+
+    SHL = 0x0b,
+
+    SHR = 0x0c,
 
     // ================
     // == arithmetic ==
