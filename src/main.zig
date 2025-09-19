@@ -90,8 +90,13 @@ pub fn main() !void {
     // Check hardware support
     hardware.platform.check_hardware_support();
 
+    // Get the input file
+    const args = try std.process.argsAlloc(allocator);
+        defer std.process.argsFree(allocator, args);
+    const target_file_dir = args[1];
+
     // Get the target file's content
-    const target_file = try fs.File.open("testing/example.pbin");
+    const target_file = try fs.File.open(target_file_dir);
     file_content = target_file.read();
         defer file_content.deinit();
     current_byte_address = @intFromPtr(&file_content.slice_ref()[0]);
