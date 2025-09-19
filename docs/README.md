@@ -5,5 +5,4 @@ These docs are meant to explain how `pai` works at a fundamental level. If you w
   
 ---
   
-* Introduction
-* Portable Assembly Virtual Machine
+* [Introduction](introduction.md)
