@@ -22,7 +22,7 @@
         ];
 
         buildPhase = ''
-        	export ZIG_GLOBAL_CACHE_DIR=$PWD/.zig-cache
+       		export ZIG_GLOBAL_CACHE_DIR=$PWD/.zig-cache
        		zig build
         '';
 
